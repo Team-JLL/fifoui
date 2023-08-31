@@ -1,0 +1,69 @@
+<div class container>
+  <div class="card">
+    <div class="row">
+      <div class="col-md-12">
+        <mat-icon class="mat-icon backBtn" aria-hidden="true"
+                  data-mat-icon-type="font" (click)="goToDashboard()">arrow_back</mat-icon>
+        <img src="assets/po.png" class="imageStyle" >
+        <label class="head">Selected Requests</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 ">
+        <mat-divider></mat-divider>
+      </div>
+    </div>
+
+  <div class="d-flex justify-content-between">
+    <div class="mr-auto p-2" style="width: 100%;margin-left: -13px">
+      <div class="sb-example-1">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)" >
+        </div>
+      </div>
+    </div>
+
+    <div class="p-2" *ngIf="hideBtn">
+      <mat-form-field  appearance="outline" >
+        <mat-label class="matlabel"> Select ASM/ZSM/KAM </mat-label>
+        <mat-select placeholder="Select ASM/ZSM/KAM "
+                    required="true"
+                    multiple
+                    [formControl]="liqdtnUser"
+                    [value] = "asmOrZonalManagers">
+          <mat-option [value] = "'all'" (click)="selectAllManagers(manager)" #manager>SelectAll</mat-option>
+          <mat-option *ngFor="let users of liquidationUserList" [value]="users">{{users.liqdtnUsrName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="p-2" *ngIf="!sbmtBtn">
+      <button type="button" class="submitButton btn-sm" (click)="submit()">Submit Request</button>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between p-2">
+    <ag-grid-angular
+          style="width: 100%; height: 400px;margin-top: -40px; text-align: center"
+          class="ag-theme-balham"
+          [rowHeight]="25"
+          [paginationAutoPageSize]="true"
+          [paginationPageSize]="20"
+          [headerHeight]="35"
+          [scrollbarWidth]="2"
+          rowSelection="multiple"
+          [rowMultiSelectWithClick]="true"
+          [pagination]="true"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          (gridReady)="onGridReady($event)"
+          (cellClicked)="cellClickEvent($event)"
+          (rowSelected)="activitySelected($event)"
+          [rowData]="rowData">
+    </ag-grid-angular>
+  </div>
+
+  </div>
+</div>
+

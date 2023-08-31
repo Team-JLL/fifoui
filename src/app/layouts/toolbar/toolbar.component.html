@@ -1,0 +1,29 @@
+<div class="d-flex align-items-center topbar" style="height: 55px;background-color: whitesmoke;margin-left: -15px;">
+  <div class="p-2 d-sm-block d-none">
+    <span><img style="width: 50%;height: 1%;" src="assets/logo-ujala.png"></span>
+  </div>
+  <div class="p-2" style="margin-left: -175px;height: 95px;">
+    <button mat-icon-button (click)="onMenuClicked()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <div style="margin-left: auto; display: flex">
+    <div class="p-2 d-sm-block d-none" style="font-size: 12px" [matMenuTriggerFor]="dropDownMenu">
+    <p class="usrname">{{username}}</p>
+    <p class="subtitile">{{department}}</p>
+  </div>
+  <div class="p-2"  [matMenuTriggerFor]="dropDownMenu">
+    <img class="avatar"  src="assets/profile.png">
+  </div>
+
+  <mat-menu #dropDownMenu >
+    <button mat-menu-item  style="font-size: 12px;border: none;" >
+      <mat-icon style="font-size: 18px; margin-top: 2px; color: #3f51b5">account_circle</mat-icon>My Profile
+    </button>
+    <button mat-menu-item  style="font-size: 12px;border: none;" (click)="logOut()">
+      <mat-icon style="font-size: 20px; margin-top: 2px; color: #ff0325">settings_power</mat-icon>Logout
+    </button>
+  </mat-menu>
+
+</div>
+

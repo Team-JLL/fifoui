@@ -1,0 +1,10 @@
+
+
+.remarkColumn {
+  width: 100%;
+  height: 26px;
+  border: solid 1px;
+  line-height: initial;
+  border-radius: 2px;
+  border-color: lightgray
+}

@@ -1,0 +1,16 @@
+.table td {
+  vertical-align: middle;
+}
+
+table tr {
+  height: 100px;
+}
+.spacer{
+  height: 5%;
+}
+.remark{
+  color: gray;
+  font-size: 10px;
+}
+
+

@@ -1,0 +1,31 @@
+.spacer{
+  height: 10px;
+}
+
+.aprvbtn{
+  /*background-color: #1D53E6;*/
+  background-color: #3e7c59;
+  color: #FFFFFF;
+  opacity: 1;
+  font-size:15px;
+  border: none;
+  border-radius:5px;
+  height: 38px;
+  width: 144px;
+}
+.Cnclbtn{
+  background-color: #FFFFFF;
+  color: red;
+  opacity: 1;
+  font-size:15px;
+  border: solid;
+  border-radius:5px;
+  height: 38px;
+  width: 144px;
+}
+
+.pHeader{
+  font-family: math;
+  color: #003471;
+  margin-left: -38%;
+}

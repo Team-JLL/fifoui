@@ -1,0 +1,102 @@
+<div class container>
+<div class="row">
+  <div class="col-md-12">
+    <img src="assets/dashboard.png" alt="" style="height: 20px;padding-left: 10px;margin-bottom: 10px">
+    <label class="form-header-2">{{title}}</label>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12 ">
+    <mat-divider></mat-divider>
+  </div>
+</div>
+  <!--FIFOUSR : Requester | FIFOFBUSR : Final Bypass User-->
+  <div class="row d-flex justify-content-between" style="margin-right: 20px;margin-left: -10px">
+    <div class="col-xl-3 col-sm-6 col-12 p-0.5" (click)="getBypassCardData('T')">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-body">
+            <div class="media d-flex">
+              <div class="align-self-center">
+                <i class="icon-note primary font-large-2 float-left"></i>
+              </div>
+              <div class="media-body text-right">
+                <h3>{{totalCount}}</h3>
+                <span class="card-content-style" style="color: #00B5B8">Total Bypass</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12 p-0.5" (click)="getBypassCardData('P')">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-body">
+            <div class="media d-flex">
+              <div class="align-self-center">
+                <i class="icon-list danger font-large-2 float-left"></i>
+              </div>
+              <div class="media-body text-right">
+                <h3>{{pendCount}}</h3>
+                <span class="card-content-style" style="color: #FF7588">My Activity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12 p-0.5" (click)="getBypassCardData('W')">
+      <div class="card">
+        <div class="card-content">
+          <div class="card-body">
+            <div class="media d-flex">
+              <div class="align-self-center">
+                <i class="icon-bar-chart warning font-large-2 float-left"></i>
+              </div>
+              <div class="media-body text-right">
+                <h3>{{wipCount}}</h3>
+                <span class="card-content-style" style="color: #FFA87D">WIP/Rejected Bypass</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12 p-0.5" (click)="getBypassCardData('C')">
+      <div class="card" title="Available in Repository" >
+        <div class="card-content">
+          <div class="card-body">
+            <div class="media d-flex">
+              <div class="align-self-center">
+                <i class="icon-check success font-large-2 float-left"></i>
+              </div>
+              <div class="media-body text-right">
+                <h3>{{comCount}}</h3>
+                <span class="card-content-style" style="color: #16D39A">Completed Bypass</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height: 5px"></div>
+
+    <div style="margin-left: 10px;  width: 98%">
+      <mat-tab-group animationDuration="0ms" class=" mat-elevation-z4 " [selectedIndex]="selectedIndex" (selectedTabChange)="onTabChanged($event)" >
+        <mat-tab label=" FIFO Master "  *ngIf="!role.match('FIFOFBUSR')" >
+          <app-all-request></app-all-request>
+        </mat-tab>
+        <mat-tab label=" Bypassed Requests" >
+          <app-dashboard *ngIf="role.match('FIFOADM') || role.match('FIFOUSR')  " (newItemEvent)="getCountData()"></app-dashboard>
+          <app-liquidation *ngIf="role.match('FIFOLQDUSR')  "   (newItemEvent)="getCountData()" ></app-liquidation>
+          <app-approval-feasibility *ngIf="role.match( 'FIFOAFUSR') " (newItemEvent)="getCountData()"></app-approval-feasibility>
+          <app-final-bypass *ngIf="role.match('FIFOFBUSR') " (newItemEvent)="getCountData()"></app-final-bypass>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+</div>
+
+

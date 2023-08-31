@@ -1,0 +1,26 @@
+<div class="container-fluid">
+  <br><div class="spacer"></div>
+  <div class="row">
+  <div class="col-md-8">
+    <label><img src="assets/history.png" alt="" style="height: 25px;padding-left: 10px;margin-bottom: -14px;margin-top: -14px"/></label>
+    <label class="history-form-header">&nbsp;Bypass&nbsp;</label>
+    <label class="history-form-header">Request&nbsp;</label>
+    <label class="history-form-header">History&nbsp;</label>
+  </div>
+<!--  <div class="col-md-4">-->
+<!--    <button type="button" class="btn justify-content-center"  (click)="downloadEventLogReport()" >-->
+<!--      <i class="fa fa-download"><span style="font-weight: bold; color:#004da7;"></span></i> Download</button>-->
+<!--  </div>-->
+  </div>
+  <br>
+  <div class="spacer"></div>
+  <div class="timeline">
+    <div class="container right" *ngFor=" let event of data">
+      <div class="content">
+        <h2 [className]="event.styleClass">{{event.eventName}} - ({{event.creationdate}})</h2>
+        <p style="color: #037ca9; font-size: 12px; font-family: Arial,monospace">{{event.eventRemark}}</p>
+        <p style="color: darkblue; font-size: 12px;font-family: sans-serif">Remarks : {{event.userRemark}}</p>
+      </div>
+    </div>
+  </div>
+</div>

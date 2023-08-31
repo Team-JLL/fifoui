@@ -1,0 +1,69 @@
+<div class container>
+  <div class="card fifo-headings-lite">
+    <div class="d-flex justify-content-between" >
+      <div><h5 class="card_h5"><i class="fa fa-dashcube"></i>&nbsp;{{_cardStatus}}</h5></div>
+      <div><button type="button" class="historyDownload" (click)="downloadBypassHistory(_cardHistory)">
+        <img src="assets/fifo_history.png" alt="" style="height: 25px;"/>Download</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between grid_style">
+    <div class="mr-auto p-1" style="width: 100%;margin-left: -13px">
+      <div class="sb-example-1">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)" >
+        </div>
+      </div>
+    </div>
+
+    <div class="p-1"  *ngIf="!hideBtn">
+      <button type="button" class="btn justify-content-center"  [matMenuTriggerFor]="menu" >
+        <i class="fa fa-download" aria-hidden="true"><span style="font-weight: bold; color:#004da7;font-family: monospace;font-size: 14px;" >FIFO Reports</span></i> </button>
+          <mat-menu #menu="matMenu" [overlapTrigger]="false" style="font-size: 1px">
+             <button mat-menu-item (click)="downloadFinalBypassReport('BY')">
+               <mat-icon style="color: #DF2E38">description</mat-icon><span class="mat-menu-style">Bypass</span>
+             </button>
+             <button mat-menu-item (click)="downloadFinalBypassReport('LQ')">
+               <mat-icon style="color: #5D9C59">description</mat-icon><span class="mat-menu-style">Upload new</span>
+            </button>
+            <button mat-menu-item (click)="downloadFinalBypassReport('both')">
+               <mat-icon style="color: #0047AB">description</mat-icon><span class="mat-menu-style">Both</span>
+            </button>
+          </mat-menu>
+    </div>
+
+    <div class="p-1" *ngIf="!hideBtn">
+      <button type="button" class="btn btn-danger btn-sm" style=" width: 90px ; height: 35px;color: #0f1010"
+      (click)="rejectBypass()"> <i class="fa fa-ban" aria-hidden="true"></i> Reject</button>
+    </div>
+
+    <div class="p-1" *ngIf="!hideBtn" >
+      <button type="button" class="btn btn-primary btn-sm" style=" width: 90px;height: 35px;margin-left: -30px;color: #ffffff"
+      (click)="approveBypass()"> <i class="fa fa-check" aria-hidden="true"></i> Approve</button>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between p-1">
+    <ag-grid-angular
+      style="width: 100%; height: 450px;text-align: center"
+      class="ag-theme-balham"
+      [rowHeight]="30"
+      [paginationAutoPageSize]="true"
+      [paginationPageSize]="20"
+      [headerHeight]="35"
+      [scrollbarWidth]="2"
+      rowSelection="multiple"
+      [rowMultiSelectWithClick]="true"
+      [pagination]="true"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      (gridReady)="onGridReady($event)"
+      (rowSelected)="activitySelected($event)"
+      (cellClicked)="cellClickEvent($event)"
+      [rowData]="rowData">
+    </ag-grid-angular>
+  </div>
+
+</div>
+

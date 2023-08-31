@@ -1,0 +1,22 @@
+.sidebar-menu-item {
+  width: 250px;
+  color: white;
+  height: 40px !important;
+  border-radius: 0;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.mat-drawer-content {
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+mat-side-nav{
+  width: 170px;
+  color:white;
+  background-color:#1d344c;
+  margin-left: -15px !important;
+}
+
+::ng-deep .mat-drawer-inner-container{
+  overflow: hidden !important;
+}

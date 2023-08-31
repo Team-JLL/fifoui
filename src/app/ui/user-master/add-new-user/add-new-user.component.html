@@ -1,0 +1,167 @@
+ <div class="row">
+    <div class="col-md-8">
+      <label><img src="assets/add-user.png" alt="" style="height: 25px;padding-left: 10px;margin-bottom: -14px;margin-top: -14px"/></label>
+      <label class="history-form-header"> {{this.title}} </label>
+      <label class="history-form-header"> User&nbsp;</label>
+    </div>
+  </div>
+
+ <div class="container-fluid bordered-div">
+
+   <div class="row" style="font-size: 12px">
+
+     <div class="col-md-6 col-sm-6">
+       <mat-form-field class="full-width" appearance="outline">
+         <mat-label>Requester</mat-label>
+         <mat-select  required
+                      [(value)]="requesterIds"
+                      (selectionChange)="getRequesterType(requesterIds)"
+                      [disabled]="disableUnEditFields()" >
+           <mat-option>
+           <ngx-mat-select-search [formControl]="userFIlter"
+                                  [noEntriesFoundLabel]="'Nothing to display'"
+                                  [placeholderLabel]="'Search'">
+             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+           </ngx-mat-select-search>
+           </mat-option>
+           <mat-option [value]="0">None</mat-option>
+           <mat-option *ngFor="let usr of filteredUsers | async" [value]="usr.usrId">
+             {{usr.usrName}}
+           </mat-option>
+         </mat-select>
+       </mat-form-field>
+     </div>
+
+     <div class="col-md-6 col-sm-6">
+       <mat-form-field class="full-width" appearance="outline">
+         <mat-label>Requester Type</mat-label>
+         <input matInput [(ngModel)]="requesterType" readonly [disabled]="disableUnEditFields()" >
+       </mat-form-field>
+     </div>
+   </div>
+
+
+   <div class="row" style="font-size: 12px">
+
+     <div class="col-md-6 col-sm-6">
+       <mat-form-field class="full-width" appearance="outline">
+         <mat-label>Channel</mat-label>
+         <mat-select  required
+                      [(value)]="channel" >
+           <mat-option>
+           <ngx-mat-select-search [formControl]="channelFIlter"
+                                  [noEntriesFoundLabel]="'Nothing to display'"
+                                  [placeholderLabel]="'Search'">
+             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+           </ngx-mat-select-search>
+           </mat-option>
+           <mat-option [value]="0">None</mat-option>
+           <mat-option *ngFor="let channel of filteredChannels | async" [value]="channel.channelId">
+             {{channel.channelName}}
+           </mat-option>
+         </mat-select>
+       </mat-form-field>
+     </div>
+
+     <div class="col-md-6 col-sm-6">
+       <mat-form-field class="full-width" appearance="outline">
+         <mat-label>Depot</mat-label>
+         <mat-select  required
+                      [(value)]="depot" >
+           <mat-option>
+           <ngx-mat-select-search [formControl]="depotFIlter"
+                                  [noEntriesFoundLabel]="'Nothing to display'"
+                                  [placeholderLabel]="'Search'">
+             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+           </ngx-mat-select-search>
+           </mat-option>
+           <mat-option [value]="0">None</mat-option>
+           <mat-option *ngFor="let depot of filteredDepots | async" [value]="depot.depotId">
+             {{depot.depotName}}
+           </mat-option>
+         </mat-select>
+       </mat-form-field>
+     </div>
+   </div>
+
+
+   <div class="row" style="font-size: 12px">
+
+     <div class="col-md-6 col-sm-6">
+       <mat-form-field class="full-width" appearance="outline">
+         <mat-label>Liquidation User</mat-label>
+         <mat-select
+                     required
+                     multiple
+                     [(value)]="liquidUsrIds" >
+           <mat-option>
+           <ngx-mat-select-search [formControl]="userFIlter"
+                                  [noEntriesFoundLabel]="'Nothing to display'"
+                                  [placeholderLabel]="'Search'">
+             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+           </ngx-mat-select-search>
+           </mat-option>
+           <mat-option [value]="0">None</mat-option>
+           <mat-option *ngFor="let usr of filteredUsers | async" [value]="usr.usrId">
+             {{usr.usrName}}
+           </mat-option>
+         </mat-select>
+       </mat-form-field>
+     </div>
+
+     <div class="col-md-6 col-sm-6">
+       <mat-form-field class="full-width" appearance="outline">
+         <mat-label>Demand Planner</mat-label>
+         <mat-select required
+                    [(value)]="dmndPlnrUsrIds" [disabled]="disableUnEditFields()">
+           <mat-option>
+           <ngx-mat-select-search [formControl]="userFIlter"
+                                  [noEntriesFoundLabel]="'Nothing to display'"
+                                  [placeholderLabel]="'Search'">
+             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+           </ngx-mat-select-search>
+           </mat-option>
+           <mat-option [value]="0">None</mat-option>
+           <mat-option *ngFor="let usr of filteredUsers | async" [value]="usr.usrId">
+             {{usr.usrName}}
+           </mat-option>
+         </mat-select>
+       </mat-form-field>
+     </div>
+   </div>
+
+   <div class="row" style="font-size: 12px">
+     <div class="col-md-12 col-sm-12">
+       <mat-form-field class="full-width" appearance="outline">
+         <mat-label>ZSM User</mat-label>
+         <mat-select
+           required
+           [(value)]="zsmUsr" >
+           <mat-option>
+             <ngx-mat-select-search [formControl]="userFIlter"
+                                    [noEntriesFoundLabel]="'Nothing to display'"
+                                    [placeholderLabel]="'Search'">
+               <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+             </ngx-mat-select-search>
+           </mat-option>
+           <mat-option [value]="0">None</mat-option>
+           <mat-option *ngFor="let usr of filteredUsers | async" [value]="usr.usrId">
+             {{usr.usrName}}
+           </mat-option>
+         </mat-select>
+       </mat-form-field>
+     </div>
+   </div>
+
+
+     <div class="d-flex">
+       <div class="mr-auto p-2"></div>
+       <div class="p-2">
+         <button type="button" class="btn btn-light" mat-dialog-close style="width: 120px">Close</button>
+       </div>
+       <div class="p-2">
+         <button type="button" class="btn btn-primary" style="width: 120px;margin-left: -40px" (click)="checkingBtnAction()">{{title}}</button>
+       </div>
+     </div>
+
+ </div>

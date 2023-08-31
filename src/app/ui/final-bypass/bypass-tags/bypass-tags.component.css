@@ -1,0 +1,17 @@
+.badge-success{
+  background-color: #5D9C59;
+}
+
+.badge-danger{
+  background-color:  #DF2E38;
+  color: white;
+}
+
+.tag_buttons span {
+  width: 85px;
+  height: 20px;
+  font-size: 9px;
+  font-family: auto, initial ;
+  padding-top: 6px;
+}
+

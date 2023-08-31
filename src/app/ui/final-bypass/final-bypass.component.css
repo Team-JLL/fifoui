@@ -1,0 +1,21 @@
+.btn{
+  background-color: #ffffff;
+  height: 30px;
+  font-size: 15px;
+  padding: 4px;
+  color: #004da7;
+  width: 120px;
+  font-weight: 100
+}
+
+.mat-mdc-menu-content {
+  margin: -10px;
+  padding: 0px 0;
+  list-style-type: none;
+}
+
+
+.mat-menu-style{
+  font-family: Lato;
+  font-size: 13px;
+}

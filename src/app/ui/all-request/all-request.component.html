@@ -1,0 +1,53 @@
+<div class container>
+  <div class="d-flex justify-content-between" style="margin-bottom: -25px; margin-top: 5px">
+    <div class="mr-auto p-1" style="width: 100%;margin-left: -13px">
+      <div class="sb-example-1">
+        <div class="search">
+          <input type="text" class="searchTerm" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)" >
+        </div>
+      </div>
+    </div>
+
+<!--  Excel download at all level /screens(For FIFO master).&ndash;&gt;-->
+    <div class="p-1">
+      <button type="button" class="FIFOExcelDownload"  (click)="downloadFifoMaster()">
+        <img src="assets/FIFO_download.png" alt="" style="height: 25px;"/>FIFO MASTER
+      </button>
+    </div>
+
+    <div class="p-1"  *ngIf="!hideBtn">
+      <button type="button" class="slctdRqstBtn"  (click)="goToSummaryScreen()">
+        <img src="assets/choose.png" alt="" style="height: 25px;"/>Selected Requests({{slctdFifoCount}})
+      </button>
+    </div>
+    <div class="p-1" *ngIf="!hideBtn">
+      <button type="button" class="btn" (click)="submitSelectedRequests()" >
+        Bypass <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between p-1">
+    <ag-grid-angular
+      style="width: 100%; height: 485px;text-align: center"
+      class="ag-theme-balham"
+      [rowHeight]="25"
+      [paginationAutoPageSize]="true"
+      [paginationPageSize]="20"
+      [headerHeight]="25"
+      [scrollbarWidth]="2"
+      rowSelection="multiple"
+      [rowMultiSelectWithClick]="true"
+      [pagination]="true"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      (gridReady)="onGridReady($event)"
+      (rowSelected)="activitySelected($event)"
+      [filterable]="true" [showfilterrow]="true"
+      [getRowStyle]="getRowStyle"
+      [getRowNodeId]="getRowNodeId"
+      [rowData]="rowData">
+    </ag-grid-angular>
+  </div>
+
+</div>

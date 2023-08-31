@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="d-flex justify-content-between" >
+    <div class="p-1">
+    <label class="head">Bypass Requests</label>
+    </div>
+    <div class="p-1">
+      <span (click)="close()">
+        <mat-icon>close</mat-icon>
+      </span>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="spacer"></div>
+  <div class="container-fluid card" style="padding: 10px;margin-bottom: 10px">
+  <div class="d-flex justify-content-center">
+    <p class="pHeader" >Are you sure to approve the request(s)?</p>
+  </div>
+  <div class="d-flex">
+    <textarea name="" cols="30" rows="10"  style="width: 99%;height: 70px;" placeholder="Enter remarks..." [(ngModel)]="remarks">
+    </textarea>
+  </div>
+  <div class="d-flex justify-content-end" style="margin-right: -11px;">
+    <div class="p-1">
+      <button mat-stroked-button color="warn" (click)="close()"><mat-icon>keyboard_double_arrow_left</mat-icon>Cancel</button>
+    </div>
+    <div class="p-1">
+      <button mat-stroked-button color="primary"(click)="ApproveRequest()" >Yes, Approve</button>
+    </div>
+  </div>
+</div>
+</div>

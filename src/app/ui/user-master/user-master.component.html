@@ -1,0 +1,59 @@
+<div class="container-fluid">
+<div class="card">
+<div class="card-body" >
+  <div class="row">
+    <div class="col-md-12" align="left">
+      <label class="form-header-3">Requesters&nbsp;</label>
+      <label class="form-header-3">Mapping&nbsp;</label>
+      <small style="color: #005193">- Depot wise requester mapping for FIFO bypass . </small>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 ">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+
+  <div class="d-flex" >
+<!--    <div class="p-1 ">-->
+<!--      <button type="button" class="btn upload-btn btn-sm mt-1">-->
+<!--        <i class="fa fa-cloud-upload" aria-hidden="true"> &nbsp; Upload Mapping</i>-->
+<!--      </button>-->
+<!--    </div>-->
+    <div class="p-1 ">
+      <button type="button" class="btn mapping-btn btn-sm mt-1" (click)="addNewUserMapping()">
+        <i class="fa fa-user-plus" aria-hidden="true"> &nbsp; New Mapping</i>
+      </button>
+    </div>
+    <div class="ml-auto p-2 ">
+      <div class="sb-example-usermaster">
+        <input type="text" class="searchTerm" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)" >
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" style="margin-top: -40px">
+    <div class="d-flex justify-content-center p-2">
+      <ag-grid-angular
+        style="width: 100%; height: 380px;text-align: center"
+        class="ag-theme-balham"
+        [rowHeight]="26"
+        [paginationAutoPageSize]="true"
+        [paginationPageSize]="20"
+        [headerHeight]="35"
+        [scrollbarWidth]="2"
+        [pagination]="true"
+        (gridReady)="onGridReady($event)"
+        (cellClicked)="cellClickEvent($event)"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [filterable]="true" [showfilterrow]="true"
+        [rowData]="rowData">
+      </ag-grid-angular>
+    </div>
+  </div>
+
+</div>
+  </div>
+</div>

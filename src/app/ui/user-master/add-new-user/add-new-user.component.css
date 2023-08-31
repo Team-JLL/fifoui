@@ -1,0 +1,19 @@
+.bordered-div {
+  border: 1px solid #037ca9;
+  width: 97%;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.row {
+  padding-top: 15px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface{
+  overflow: hidden !important;
+}
+

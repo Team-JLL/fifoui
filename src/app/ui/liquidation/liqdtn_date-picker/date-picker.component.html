@@ -1,0 +1,10 @@
+
+<div class="input-icon-wrap d-flex justify-content-end">
+  <input class="input-with-icon"
+         #dateInput
+         matInput [matDatepicker]="datePicker" (focus)="datePicker.open()"
+         (dateChange)="changeDate($event)" [min]="currentDate" [max]="endDate"
+         placeholder="DD/MM/YYYY"  readonly>
+  <mat-datepicker  #datePicker ></mat-datepicker>
+  <span class="input-icon"><mat-datepicker-toggle matSuffix [for]="datePicker" *ngIf="!isDisabled"></mat-datepicker-toggle></span>
+</div>

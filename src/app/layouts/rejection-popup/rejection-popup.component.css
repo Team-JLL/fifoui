@@ -1,0 +1,24 @@
+.delete-info{
+  background: #FFF5F5;
+  padding: 14px;
+  color: #FF432E;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.delete-info:after{
+  content: '';
+  width: 5px;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top:0;
+  background: #FF432E;
+}
+
+.pHeader{
+  font-family: math;
+  color: red;
+  margin-left: -40%;
+}

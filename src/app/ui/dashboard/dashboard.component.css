@@ -1,0 +1,16 @@
+
+.reject-button {
+  background-color: #ff2b3f;
+  border-radius: 10px;;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Abel', sans-serif;
+}
+
+
+

@@ -1,0 +1,24 @@
+<app-toolbar (menuClicked)="sidenav.toggle()"></app-toolbar>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav [mode]="openSideBar() ? 'over': 'side'" [opened]="!openSideBar()" style="background-color:#1d344c;width: 170px;padding-right: 50px; margin-left: -15px">
+    <div class="row">
+      <button mat-button class="sidebar-menu-item" style="color: white;font-size: 13px" (click)="goToDashboard()">
+        <mat-icon>home</mat-icon>Dashboard</button>
+    </div>
+
+    <div class="row">
+      <button mat-button class="sidebar-menu-item" style="color: white;font-size: 13px" (click)="goToRepository()">
+        <mat-icon>dashboard</mat-icon>Repository</button>
+    </div>
+
+    <div class="row" *ngIf="role.match('FIFOADM') || role.match('FIFOAFUSR')" >
+      <button mat-button class="sidebar-menu-item" style="color: white;font-size: 13px" (click)="goToUserMaster()">
+        <mat-icon>manage_accounts</mat-icon>User Master</button>
+    </div>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content style="height: calc(100vh - 64px)">
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
