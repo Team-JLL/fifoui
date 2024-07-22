@@ -1,5 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
-import {ApproveBarComponent} from "../../layouts/approve-popup/approve-bar/approve-bar.component";
+import {Component} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {DashboardService} from "../../services/dashboard.service";
@@ -8,12 +7,7 @@ import {CryptoService} from "../../services/crypto.service";
 import {CookieService} from "ngx-cookie-service";
 import {SpinnerService} from "../../services/spinner.service";
 import {ColDef, GridApi} from 'ag-grid-community';
-import {BypassTagsComponent} from "../final-bypass/bypass-tags/bypass-tags.component";
 import {AddNewUserComponent} from "./add-new-user/add-new-user.component";
-import {values} from "ag-grid-community/dist/lib/utils/generic";
-import {EventPopupComponent} from "../event-popup/event-popup.component";
-
-
 
 @Component({
   selector: 'app-user-master',
@@ -53,7 +47,7 @@ export class UserMasterComponent {
     {field: 'liqdtnUsrId', headerName: 'liqdtnUsrId', width: 10 , hide:true},
     {field: 'liqdtnUsrName', headerName: 'Liquidation User', width: 250},
     {field: 'demandPlnrId', headerName: 'demandPlnrId', width: 10 , hide:true},
-    {field: 'demandPlnrName', headerName: 'Demand Planner', width: 150},
+    {field: 'demandPlnrName', headerName: 'Demand Planner', width: 250},
     {field: 'zsm_user', headerName: 'zsm_user', width: 10, hide:true},
     {field: 'zsm_mails', headerName: 'ZSM', width: 250},
     {field: 'edit', headerName: 'edit',width: 80,

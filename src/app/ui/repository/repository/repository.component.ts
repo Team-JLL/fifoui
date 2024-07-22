@@ -40,7 +40,7 @@ export class RepositoryComponent {
 
 
   public columnDefs: ColDef[] = [
-    {field: 'index', headerName: 'No.', width: 60, valueGetter: (node: any) => String(node.node.rowIndex + 1), floatingFilter: false,},
+    {field: 'index', headerName: 'Sl. No.', width: 80, valueGetter: (node: any) => String(node.node.rowIndex + 1), floatingFilter: false,},
     {field: 'bypassRqstId', headerName: 'ReqId', width: 100, hide:true},
     {field: 'bypassRequestCd', headerName: 'Request Code', filter: true, width: 170,sortable: true,},
     {field: 'historyEvent', headerName: 'History', filter: false, width: 80, cellRenderer: this.colDef1,cellStyle: {textAlign: 'center'}},
