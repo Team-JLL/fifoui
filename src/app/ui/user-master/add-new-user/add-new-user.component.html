@@ -115,7 +115,7 @@
        <mat-form-field class="full-width" appearance="outline">
          <mat-label>Demand Planner</mat-label>
          <mat-select required multiple
-                    [(value)]="dmndPlnrUsrIds" [disabled]="disableUnEditFields()">
+                    [(value)]="dmndPlnrUsrIds">
            <mat-option>
            <ngx-mat-select-search [formControl]="userFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
@@ -137,8 +137,8 @@
        <mat-form-field class="full-width" appearance="outline">
          <mat-label>ZSM User</mat-label>
          <mat-select
-           required
-           [(value)]="zsmUsr" >
+           required multiple
+           [(value)]="zsmUsr" (selectionChange)="onSelectionChange($event.value)" >
            <mat-option>
              <ngx-mat-select-search [formControl]="userFIlter"
                                     [noEntriesFoundLabel]="'Nothing to display'"

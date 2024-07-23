@@ -108,10 +108,22 @@ export class UserMasterComponent {
     }
   }
 
-  getBypassUserMapping(){
-    this.dashboardservice.getBypassUserMapping().subscribe(response =>{
-      this.rowData = response.data
-    })
+  getBypassUserMapping() {
+    const spine = this.spinner.start();
+
+    this.dashboardservice.getBypassUserMapping().subscribe({
+      next: (response) => {
+        this.rowData = response.data;
+        this.spinner.stop(spine);
+      },
+      error: (error) => {
+        console.error("Error fetching bypass user mapping", error);
+        this.spinner.stop(spine);
+      },
+      complete: () => {
+
+      }
+    });
   }
 
   addNewUserMapping(){
