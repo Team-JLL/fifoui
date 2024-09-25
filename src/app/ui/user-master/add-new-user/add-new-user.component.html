@@ -1,10 +1,12 @@
  <div class="row">
     <div class="col-md-8">
-      <label><img src="assets/add-user.png" alt="" style="height: 25px;padding-left: 10px;margin-bottom: -14px;margin-top: -14px"/></label>
-      <label class="history-form-header"> {{this.title}} </label>
-      <label class="history-form-header"> User&nbsp;</label>
+      <label><img src="assets/add-user.png" alt="" style="height: 28px;padding-left: 10px;margin-bottom: -14px;margin-top: -14px"/></label>
+      <label class="history-form-header">{{this.title}}&nbsp;</label>
+      <label class="history-form-header">User</label>
     </div>
   </div>
+
+ <div class="mat-divider"></div>
 
  <div class="container-fluid bordered-div">
 
@@ -112,8 +114,8 @@
      <div class="col-md-6 col-sm-6">
        <mat-form-field class="full-width" appearance="outline">
          <mat-label>Demand Planner</mat-label>
-         <mat-select required
-                    [(value)]="dmndPlnrUsrIds" [disabled]="disableUnEditFields()">
+         <mat-select required multiple
+                    [(value)]="dmndPlnrUsrIds">
            <mat-option>
            <ngx-mat-select-search [formControl]="userFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
@@ -135,8 +137,8 @@
        <mat-form-field class="full-width" appearance="outline">
          <mat-label>ZSM User</mat-label>
          <mat-select
-           required
-           [(value)]="zsmUsr" >
+           required multiple
+           [(value)]="zsmUsr" (selectionChange)="onSelectionChange($event.value)" >
            <mat-option>
              <ngx-mat-select-search [formControl]="userFIlter"
                                     [noEntriesFoundLabel]="'Nothing to display'"
@@ -153,6 +155,8 @@
      </div>
    </div>
 
+   <div style="height: 12px"></div>
+   <div class="mat-divider"></div>
 
      <div class="d-flex">
        <div class="mr-auto p-2"></div>
@@ -160,7 +164,7 @@
          <button type="button" class="btn btn-light" mat-dialog-close style="width: 120px">Close</button>
        </div>
        <div class="p-2">
-         <button type="button" class="btn btn-primary" style="width: 120px;margin-left: -40px" (click)="checkingBtnAction()">{{title}}</button>
+         <button type="button" class="btn btn-primary" style="width: 120px;margin-left: -40px; margin-right:-25px" (click)="checkingBtnAction()">{{title}}</button>
        </div>
      </div>
 

@@ -32,15 +32,14 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
 
   requesterIds: any ;
   liquidUsrIds: any = [];
-  dmndPlnrUsrIds: any ;
+  dmndPlnrUsrIds: any = [] ;
   channel: any ;
   depot: any;
   requesterType: any;
   mappingId = 0;
-  zsmUsr: any ;
+  zsmUsr: any = []
   title: string = 'Add ';
-
-
+  selectedUserIds: number[] = [];
 
   constructor(private dialogRef: MatDialogRef<AddNewUserComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -63,7 +62,7 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
 
   editActions(){
     if(this.data.edit){
-      this.title = 'Edit'
+      this.title = 'Update'
       this.getDataFieldsForEdit()
     }
   }
@@ -122,8 +121,13 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
 
   }
 
+  onSelectionChange(selectedIds: number[]) {
+    this.selectedUserIds = selectedIds;
+  }
+
   private filteredActors() {
-    // get the search keyword
+
+    // Get the search keyword
     let search = this.userFIlter.value;
     if (!search) {
       this.filteredUsers.next(this.users.slice());
@@ -131,10 +135,12 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
     } else {
       search = search.toLowerCase();
     }
-    // filter the banks
-    this.filteredUsers.next(
-      this.users.filter(fpr => fpr.usrName.toLowerCase().indexOf(search) > -1)
-    );
+
+    const filtered = this.users.filter(fpr => fpr.usrName.toLowerCase().indexOf(search) > -1);
+
+    const selectedUsers = this.users.filter(user => this.selectedUserIds.includes(user.usrId));
+    const uniqueFiltered = new Set([...filtered, ...selectedUsers]);
+    this.filteredUsers.next(Array.from(uniqueFiltered));
   }
 
 
@@ -226,9 +232,12 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
     this.requesterType = innerdata.rqstrType;
     this.channel = innerdata.channelId;
     this.depot = innerdata.depotId;
-    this.dmndPlnrUsrIds = innerdata.demandPlnrId;
     this.liquidUsrIds.push(innerdata.liqdtnUsrId);
-    this.zsmUsr = innerdata.zsm_user;
+
+    /* Decimal (Base 10): 10 (this is what used radix as 10 - parseInt(id, 10)) */
+    this.dmndPlnrUsrIds = innerdata.demandPlnrId.split(',').map((id: string) => parseInt(id, 10));
+    this.zsmUsr = innerdata.zsm_user.split(',').map((id: string) => parseInt(id, 10));
+
   }
 
   editBypassMapping() {
