@@ -22,7 +22,7 @@ export class ApiProviderService {
 
   public post(apiUrl: string, data: any,options:any): Observable<any> {
     data = ApiProviderService.cleanObject(data);
-    console.log('REQUEST BODY for API :', apiUrl, data);
+    //console.log('REQUEST BODY for API :', apiUrl, data);
     return this.http.post(apiUrl, data,options);
   }
 

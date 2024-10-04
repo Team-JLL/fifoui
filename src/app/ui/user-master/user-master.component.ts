@@ -34,7 +34,7 @@ export class UserMasterComponent {
   };
 
   public columnDefs: ColDef[] = [
-    {field: 'index', headerName: 'No', width: 80, valueGetter: (node: any) => String(node.node.rowIndex + 1)},
+    {field: 'index', headerName: 'No', width: 100, valueGetter: (node: any) => String(node.node.rowIndex + 1)},
     {field: 'mappingId', headerName: 'mappingId', width: 10 , hide:true},
     {field: 'rqstrId', headerName: 'rqstrId', width: 10 , hide:true},
     {field: 'rqstrName', headerName: 'Bypass Requester', width: 150},

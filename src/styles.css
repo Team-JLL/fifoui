@@ -6,7 +6,7 @@
 @import "../node_modules/ngx-spinner/animations/ball-fussion.css";
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", serif; }
 
 
 /*//#b0c4de*/

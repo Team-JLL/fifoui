@@ -47,7 +47,7 @@ export class FinalBypassComponent {
   public columnDefs: ColDef[] = [
     //{field: '', checkboxSelection: true, width: 30, headerCheckboxSelection: true, floatingFilter: false, },
     //{field: 'index', headerName: 'No.', width: 60, valueGetter: (node: any) => String(node.node.rowIndex + 1), floatingFilter: false,},
-    {field: 'index', headerName: 'No.', width: 60,valueGetter: (node: any) => String(node.node.rowIndex + 1) , floatingFilter: false ,cellClass: 'cellCenter',
+    {field: 'index', headerName: 'No.', width: 100,valueGetter: (node: any) => String(node.node.rowIndex + 1) , floatingFilter: false ,cellClass: 'cellCenter',
       checkboxSelection : function(params) {
         if (params.data.bypassFlag.match('BY')) {
           return true;

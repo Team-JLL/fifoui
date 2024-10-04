@@ -55,7 +55,7 @@ export class ApprovalFeasibilityComponent {
   public columnDefs: ColDef[] = [
     //{field: '', checkboxSelection: true, width: 30, headerCheckboxSelection: true,floatingFilter:false,pinned:true},
     //{field: 'index', headerName: 'No', width: 80, valueGetter: (node: any) => String(node.node.rowIndex + 1)},
-    {field: 'bypassRqstId', headerName: 'ReqId', width: 120, checkboxSelection: true, headerCheckboxSelection: true,floatingFilter:true},
+    {field: 'bypassRqstId', headerName: 'ReqId', width: 150, checkboxSelection: true, headerCheckboxSelection: true,floatingFilter:true},
     {field: 'bypassRequestCd', headerName: 'Request Code', filter: true, width: 170,},
     {field: 'historyEvent', headerName: 'History', filter: false, width: 80, cellRenderer: this.colDef1,cellStyle: {textAlign: 'center'}},
     {field: 'status', headerName: 'Status', filter: true, width: 100,
