@@ -1,10 +1,18 @@
+// This file can be replaced during build by using the `fileReplacements` array.
+// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
+// The list of file replacements can be found in `angular.json`.
 
 export const environment = {
   production: false,
   envName: 'dev',
   api: 'http://localhost:8920/jllappsapi/',
   login_app_url: 'http://localhost:5000/',
-  buildType: 'DEVELOPMENT BUILD (1.0.0 beta)',
+  runMode: 'TEST',
+  buildType: ' (DEVELOPMENT BUILD 1.0.01)',
   removeConsolePrints: false
 };
+
+  /*build test/uat : ng build --configuration test --base-href */
+  /*build Live     : ng build --configuration production --base-href */
+
 
