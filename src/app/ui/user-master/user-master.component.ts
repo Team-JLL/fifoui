@@ -52,12 +52,12 @@ export class UserMasterComponent {
     {field: 'zsm_mails', headerName: 'ZSM', width: 250},
     {field: 'edit', headerName: 'edit',width: 80,
       cellRenderer: function () {
-        return '<img src="assets/pencil.png" alt="" aria-hidden="true" width="12px" height="12px" style="margin-left: 25%" />';
+        return '<img src="assets/pencil.png" alt="" aria-hidden="true" width="12px" height="12px" style="margin-left: 25%;cursor: pointer;" />';
       }
     },
     {field: 'delete', headerName: 'delete',width: 80,
       cellRenderer: function () {
-        return '<img src="assets/delete.png" alt="" aria-hidden="true" width="12px" height="12px" style="margin-left: 25%" />';
+        return '<img src="assets/delete.png" alt="" aria-hidden="true" width="12px" height="12px" style="margin-left: 25%;cursor: pointer;" />';
       }
     },
   ];
@@ -90,13 +90,18 @@ export class UserMasterComponent {
 
     if(event.colDef.field === 'edit'){
       const dataForEdit = this.rowData.filter((s: any) => s.mappingId == event.data.mappingId);
+      const spine = this.spinner.start();
       const userMappingDialog = this.dialog.open(AddNewUserComponent, {
         width: '500px',
         height: '550px',
         data: {dataForEdit, edit: true}
       });
       userMappingDialog.afterClosed().subscribe(result => {
-        this.getBypassUserMapping();
+        if (result) {
+          this.getBypassUserMapping();
+        } else {
+          this.spinner.stop(spine);
+        }
       });
     }
 
@@ -108,32 +113,61 @@ export class UserMasterComponent {
     }
   }
 
+  // getBypassUserMapping() {
+  //   const spine = this.spinner.start();
+  //
+  //   this.dashboardservice.getBypassUserMapping().subscribe({
+  //     next: (response) => {
+  //       this.rowData = response.data;
+  //       this.spinner.stop(spine);
+  //     },
+  //     error: (error) => {
+  //       console.error("Error fetching bypass user mapping", error);
+  //       this.spinner.stop(spine);
+  //     },
+  //     complete: () => {
+  //
+  //     }
+  //   });
+  // }
+
   getBypassUserMapping() {
     const spine = this.spinner.start();
+    const spinnerTimeout = setTimeout(() => {
+      this.spinner.stop(spine);
+    }, 4000); //4 seconds timeout
 
     this.dashboardservice.getBypassUserMapping().subscribe({
       next: (response) => {
         this.rowData = response.data;
         this.spinner.stop(spine);
+        clearTimeout(spinnerTimeout);
       },
       error: (error) => {
         console.error("Error fetching bypass user mapping", error);
         this.spinner.stop(spine);
+        clearTimeout(spinnerTimeout);
       },
       complete: () => {
-
+        clearTimeout(spinnerTimeout);
       }
     });
   }
 
+
   addNewUserMapping(){
+    const spine = this.spinner.start();
     const addNewMappingDialogue = this.dialog.open(AddNewUserComponent, {
       width: '500px',
       height: '550px',
       data: {}
     });
     addNewMappingDialogue.afterClosed().subscribe(result => {
-      this.getBypassUserMapping();
+      if (result) {
+        this.getBypassUserMapping();
+      } else {
+        this.spinner.stop(spine);
+      }
     });
   }
 

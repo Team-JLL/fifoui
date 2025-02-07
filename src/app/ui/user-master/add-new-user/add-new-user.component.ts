@@ -40,6 +40,10 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
   zsmUsr: any = []
   title: string = 'Add ';
   selectedUserIds: number[] = [];
+  userActiveInRunningBypassFlag: any;
+  rqstrName:any;
+  depotCd:any;
+  channelName:any;
 
   constructor(private dialogRef: MatDialogRef<AddNewUserComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -214,7 +218,6 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
             this.toaster.showSuccess('Successfully mapped')
           } else if (response.retVal == -999) {
             this.getDetailsForAddNewMapping();
-            this.clearFileds()
             this.toaster.showSuccess('Mapping is existing! Please try with another data')
           }
         },
@@ -233,6 +236,10 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
     this.channel = innerdata.channelId;
     this.depot = innerdata.depotId;
     this.liquidUsrIds.push(innerdata.liqdtnUsrId);
+    this.userActiveInRunningBypassFlag =innerdata.userActiveInRunningBypassFlag;
+    this.rqstrName =innerdata.rqstrName;
+    this.depotCd =innerdata.depotCd;
+    this.channelName =innerdata.channelName;
 
     /* Decimal (Base 10): 10 (this is what used radix as 10 - parseInt(id, 10)) */
     this.dmndPlnrUsrIds = innerdata.demandPlnrId.split(',').map((id: string) => parseInt(id, 10));
@@ -248,6 +255,8 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
       this.toaster.showWarning("Please select Depot")
     } else if (this.liquidUsrIds == 0 || this.liquidUsrIds == null) {
       this.toaster.showWarning("Please select Liquidation users")
+    } else if(this.userActiveInRunningBypassFlag == 'A' && this.channel && this.depot){
+      this.toaster.showWarning(" The bypass request raised by " + this.rqstrName + " is currently in progress for Depot ("+this.depotCd+") and Channel ("+this.channelName+"). Editing is not possible.")
     } else {
       this.dashboardservice.editBypassMapping(this.mappingId, this.requesterIds, this.channel, this.depot, this.liquidUsrIds,
         this.dmndPlnrUsrIds, this.requesterType, this.zsmUsr).subscribe({
@@ -256,6 +265,9 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
             this.getDetailsForAddNewMapping();
             this.clearFileds()
             this.toaster.showSuccess('Successfully Updated')
+          }else if (response.retVal == -999) {
+            this.getDetailsForAddNewMapping();
+            this.toaster.showWarning('Mapping is existing! Please try with another data')
           }
         },
         error: () => {

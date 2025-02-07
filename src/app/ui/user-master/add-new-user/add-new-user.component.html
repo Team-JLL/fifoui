@@ -17,13 +17,12 @@
          <mat-label>Requester</mat-label>
          <mat-select  required
                       [(value)]="requesterIds"
-                      (selectionChange)="getRequesterType(requesterIds)"
-                      [disabled]="disableUnEditFields()" >
+                      (selectionChange)="getRequesterType(requesterIds)">
            <mat-option>
            <ngx-mat-select-search [formControl]="userFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
                                   [placeholderLabel]="'Search'">
-             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+             <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
            </ngx-mat-select-search>
            </mat-option>
            <mat-option [value]="0">None</mat-option>
@@ -54,7 +53,7 @@
            <ngx-mat-select-search [formControl]="channelFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
                                   [placeholderLabel]="'Search'">
-             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+             <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
            </ngx-mat-select-search>
            </mat-option>
            <mat-option [value]="0">None</mat-option>
@@ -74,7 +73,7 @@
            <ngx-mat-select-search [formControl]="depotFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
                                   [placeholderLabel]="'Search'">
-             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+             <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
            </ngx-mat-select-search>
            </mat-option>
            <mat-option [value]="0">None</mat-option>
@@ -100,7 +99,7 @@
            <ngx-mat-select-search [formControl]="userFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
                                   [placeholderLabel]="'Search'">
-             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+             <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
            </ngx-mat-select-search>
            </mat-option>
            <mat-option [value]="0">None</mat-option>
@@ -120,7 +119,7 @@
            <ngx-mat-select-search [formControl]="userFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
                                   [placeholderLabel]="'Search'">
-             <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+             <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
            </ngx-mat-select-search>
            </mat-option>
            <mat-option [value]="0">None</mat-option>
@@ -143,7 +142,7 @@
              <ngx-mat-select-search [formControl]="userFIlter"
                                     [noEntriesFoundLabel]="'Nothing to display'"
                                     [placeholderLabel]="'Search'">
-               <i class="material-icons" ngxMatSelectSearchClear>delete_outline</i>
+               <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
              </ngx-mat-select-search>
            </mat-option>
            <mat-option [value]="0">None</mat-option>
