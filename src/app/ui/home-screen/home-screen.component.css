@@ -2,7 +2,8 @@
   width: 105%;
   margin: 5px;
   height: 90px;
-  border-radius: 10px
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 mat-icon{

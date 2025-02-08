@@ -44,6 +44,7 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
   rqstrName:any;
   depotCd:any;
   channelName:any;
+  liqdtnUsrName:any;
 
   constructor(private dialogRef: MatDialogRef<AddNewUserComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -212,13 +213,11 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
       this.dashboardservice.addNewBypassMapping(this.requesterIds, this.channel, this.depot, this.liquidUsrIds,
         this.dmndPlnrUsrIds, this.requesterType, this.zsmUsr).subscribe({
         next: (response) => {
-          if (response.retVal == 0) {
-            this.getDetailsForAddNewMapping();
-            this.clearFileds()
-            this.toaster.showSuccess('Successfully mapped')
-          } else if (response.retVal == -999) {
-            this.getDetailsForAddNewMapping();
-            this.toaster.showSuccess('Mapping is existing! Please try with another data')
+          if (response.retVal === 0) {
+            this.toaster.showSuccess("Successfully mapped");
+            this.dialogRef.close(true);
+          } else if (response.retVal === -999) {
+            this.toaster.showWarning("Mapping already exists! Try with different data");
           }
         },
         error: () => {
@@ -240,6 +239,7 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
     this.rqstrName =innerdata.rqstrName;
     this.depotCd =innerdata.depotCd;
     this.channelName =innerdata.channelName;
+    this.liqdtnUsrName =innerdata.liqdtnUsrName;
 
     /* Decimal (Base 10): 10 (this is what used radix as 10 - parseInt(id, 10)) */
     this.dmndPlnrUsrIds = innerdata.demandPlnrId.split(',').map((id: string) => parseInt(id, 10));
@@ -256,18 +256,17 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
     } else if (this.liquidUsrIds == 0 || this.liquidUsrIds == null) {
       this.toaster.showWarning("Please select Liquidation users")
     } else if(this.userActiveInRunningBypassFlag == 'A' && this.channel && this.depot){
-      this.toaster.showWarning(" The bypass request raised by " + this.rqstrName + " is currently in progress for Depot ("+this.depotCd+") and Channel ("+this.channelName+"). Editing is not possible.")
+      this.toaster.showWarning("The bypass request by ("+this.rqstrName+") is in progress for (Depot:"+this.depotCd+" - Channel:"+this.channelName+" - Liquidation User:"+this.liqdtnUsrName+") .Editing is not allowed.")
     } else {
       this.dashboardservice.editBypassMapping(this.mappingId, this.requesterIds, this.channel, this.depot, this.liquidUsrIds,
         this.dmndPlnrUsrIds, this.requesterType, this.zsmUsr).subscribe({
         next: (response) => {
-          if (response.retVal == 0) {
+          if (response.retVal === 0) {
+            this.toaster.showSuccess("Successfully updated");
+            this.dialogRef.close(true);
             this.getDetailsForAddNewMapping();
-            this.clearFileds()
-            this.toaster.showSuccess('Successfully Updated')
-          }else if (response.retVal == -999) {
-            this.getDetailsForAddNewMapping();
-            this.toaster.showWarning('Mapping is existing! Please try with another data')
+          } else if (response.retVal === -999) {
+            this.toaster.showWarning("Mapping already exists! Try with another data");
           }
         },
         error: () => {
