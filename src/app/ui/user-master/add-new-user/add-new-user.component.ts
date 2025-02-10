@@ -256,7 +256,7 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
     } else if (this.liquidUsrIds == 0 || this.liquidUsrIds == null) {
       this.toaster.showWarning("Please select Liquidation users")
     } else if(this.userActiveInRunningBypassFlag == 'A' && this.channel && this.depot){
-      this.toaster.showWarning("The bypass request by ("+this.rqstrName+") is in progress for (Depot:"+this.depotCd+" - Channel:"+this.channelName+" - Liquidation User:"+this.liqdtnUsrName+") .Editing is not allowed.")
+      this.toaster.showWarning("The bypass request by ("+this.rqstrName+") is in progress for (Depot:"+this.depotCd+" - Channel:"+this.channelName+").Editing is not allowed.")
     } else {
       this.dashboardservice.editBypassMapping(this.mappingId, this.requesterIds, this.channel, this.depot, this.liquidUsrIds,
         this.dmndPlnrUsrIds, this.requesterType, this.zsmUsr).subscribe({
