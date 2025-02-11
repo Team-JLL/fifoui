@@ -140,6 +140,16 @@ export class DashboardService {
     return this.apiProvider.post(UrlConstants.downloadRepositoryReport, data, {responseType: 'blob'});
   }
 
+  public downloadUserMasterTemplate(): Observable<any> {
+    const data = {}
+    return this.apiProvider.post(UrlConstants.downloadUserMasterTemplate, data, {responseType: 'blob'});
+  }
+
+
+  public uploadUserMasterData(): Observable<any> {
+    const data = {}
+    return this.apiProvider.post(UrlConstants.uploadUserMasterData, data, {responseType: 'blob'});
+  }
 
 
 

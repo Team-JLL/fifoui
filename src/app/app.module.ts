@@ -33,6 +33,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import { UserMasterComponent } from './ui/user-master/user-master.component';
 import { AddNewUserComponent } from './ui/user-master/add-new-user/add-new-user.component';
 import { MatTooltipModule} from "@angular/material/tooltip";
+import { AngularFileUploaderModule } from "angular-file-uploader";
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { MatTooltipModule} from "@angular/material/tooltip";
     jqxGridModule,
     NgxMatSelectSearchModule,
     MatTabsModule,
-    MatTooltipModule
+    MatTooltipModule,
+    AngularFileUploaderModule
   ],
   providers: [
     CookieService,

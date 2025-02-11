@@ -42,6 +42,8 @@ export class UrlConstants {
   public static downloadBypassHistoryReport = UrlConstants.fifoReport + 'downloadBypassHistoryReport'
   public static downloadFIFOMaster = UrlConstants.fifoReport + 'downloadFIFOMaster'
   public static downloadRepositoryReport = UrlConstants.fifoReport + 'downloadRepositoryReport'
+  public static downloadUserMasterTemplate = UrlConstants.fifoReport + 'downloadUserMasterTemplate'
+  public static uploadUserMasterData = UrlConstants.fifoReport + 'uploadUserMasterData'
 
 
 

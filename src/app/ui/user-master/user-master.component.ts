@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component,OnInit, TemplateRef, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {DashboardService} from "../../services/dashboard.service";
@@ -8,6 +8,8 @@ import {CookieService} from "ngx-cookie-service";
 import {SpinnerService} from "../../services/spinner.service";
 import {ColDef, GridApi} from 'ag-grid-community';
 import {AddNewUserComponent} from "./add-new-user/add-new-user.component";
+import {UrlConstants} from "../../utilities/UrlConstants";
+import {AppConstants} from "../../utilities/AppConstants";
 
 @Component({
   selector: 'app-user-master',
@@ -15,6 +17,7 @@ import {AddNewUserComponent} from "./add-new-user/add-new-user.component";
   styleUrls: ['./user-master.component.css']
 })
 export class UserMasterComponent {
+  @ViewChild('userMappingTemplate', { static: true }) userMappingTemplate!: TemplateRef<any>;
 
   search = '';
   gridApi !: GridApi;
@@ -26,6 +29,30 @@ export class UserMasterComponent {
   rowData?: any
   datafifo: any = []
 
+  afuConfig = {
+    multiple: false,
+    formatsAllowed: '.xlsx',
+    maxSize: 100,
+    hideProgressBar: false,
+    hideResetBtn: true,
+    replaceTexts: {
+      selectFileBtn: 'Select Template file to upload',
+      resetBtn: 'Reset',
+      uploadBtn: 'Upload',
+      dragNDropBox: 'Drag N Drop',
+      attachPinBtn: 'Attach Files...',
+      afterUploadMsg_success: 'Successfully Uploaded !',
+      afterUploadMsg_error: 'Upload Failed !'
+    },
+    uploadAPI: {
+      url: UrlConstants.uploadUserMasterData,
+      // headers: {
+      //   Authorization: `${this.cryptoService.decryptData(this.cookie.get(AppConstants.AUTHKEY))}`,
+      //   AppId: `${this.appId}`,
+      //   screenId: `${this.screenId}`,
+      // }
+    }
+  };
 
   public defaultColDef: ColDef = {
     filter: true,
@@ -145,6 +172,43 @@ export class UserMasterComponent {
         this.getBypassUserMapping();
       }
     });
+  }
+
+
+  openTemplateDownloadWarning() {
+    this.dialog.open(this.userMappingTemplate, {width: '600px'});
+  }
+
+  afterUpload($event:any) {
+    const response = JSON.parse($event.response);
+    console.log(response);
+    if (response.retVal === -222) {
+      this.toaster.showWarning(response.retMsg);
+    } else if (response.retVal === 0) {
+      //this.dialog.close(true);
+    } else {
+      this.toaster.showError('Something went wrong, Please contact administrator');
+    }
+  }
+
+  downloadUserMappingTemplate() {
+    this.dashboardservice.downloadUserMasterTemplate().subscribe((response => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = 'FIFO_User_Master_Template.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    }));
+  }
+
+  uploadUserMapping(){
+
+
+
   }
 
 

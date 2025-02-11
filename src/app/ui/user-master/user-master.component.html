@@ -14,12 +14,12 @@
     </div>
   </div>
 
-  <div class="d-flex" >
-<!--    <div class="p-1 ">-->
-<!--      <button type="button" class="btn upload-btn btn-sm mt-1">-->
-<!--        <i class="fa fa-cloud-upload" aria-hidden="true"> &nbsp; Upload Mapping</i>-->
-<!--      </button>-->
-<!--    </div>-->
+  <div class="d-flex " >
+    <div class="p-1 ">
+      <button type="button" class="btn upload-btn btn-sm mt-1" (click)="openTemplateDownloadWarning()">
+        <i class="fa fa-cloud-upload" aria-hidden="true"> &nbsp; Upload Mapping</i>
+      </button>
+    </div>
     <div class="p-1" (click)="addNewUserMapping()">
       <button type="button" class="btn mapping-btn btn-sm mt-1" >
         <i class="fa fa-user-plus" aria-hidden="true"> &nbsp; New Mapping</i>
@@ -57,3 +57,53 @@
 </div>
   </div>
 </div>
+
+<ng-template #userMappingTemplate>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10">
+        <p class="file-upload-heading">User Mapping - Upload Excel</p>
+        <p class="file-upload-heading-info">
+          Fill-up excel in the given format and upload.
+        </p>
+      </div>
+      <div class="col-md-2" align="right">
+        <button closeButton [mat-dialog-close]="false"></button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="container-fluid border border-primary">
+          <div class="row">
+            <div class="col-md-6">
+              <br />
+              <p class="file-upload-heading">Upload</p>
+              <br />
+              <angular-file-uploader
+                [config]="afuConfig"
+                (ApiResponse)="afterUpload($event)">
+              </angular-file-uploader>
+
+              <br />
+            </div>
+            <div class="col-md-5">
+              <br />
+              <p class="file-upload-heading">Download Template</p>
+              <div class="p-1 ">
+                <button type="button" class="btn upload-btn btn-sm mt-1" (click)="downloadUserMappingTemplate()">
+                  <i class="fa fa-cloud-download" aria-hidden="true"> &nbsp; Download Template</i>
+                </button>
+              </div>
+              <ul style="font-size: 13px; font-style: italic">
+                <li>Download the template file if it is not already available</li>
+                <li>Fill up the columns following the guidelines</li>
+                <li>Save and Upload the file</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
