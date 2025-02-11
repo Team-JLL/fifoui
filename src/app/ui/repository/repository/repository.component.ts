@@ -123,7 +123,24 @@ export class RepositoryComponent {
     })
   }
 
+  downloadRepositoryReport(){
 
+    let fileName = 'FIFO_Completion_Report.xlsx';
+
+    this.dashboardservice.downloadRepositoryReport().subscribe((response => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    }));
+
+
+  }
 
 
 }

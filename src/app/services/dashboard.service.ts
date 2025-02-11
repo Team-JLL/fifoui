@@ -119,9 +119,7 @@ export class DashboardService {
   }
 
 
-
-  /*----------------------Reports------------------------------------------------------------------------*/
-
+  /*----------------------Reports-----------------------------*/
   public downloadFinalBypassReport(status:any): Observable<any> {
     const data = {status}
     return this.apiProvider.post(UrlConstants.downloadFinalBypassReport, data, {responseType: 'blob'});
@@ -136,6 +134,13 @@ export class DashboardService {
     const data = {}
     return this.apiProvider.post(UrlConstants.downloadFIFOMaster, data, {responseType: 'blob'});
   }
+
+  public downloadRepositoryReport(): Observable<any> {
+    const data = {}
+    return this.apiProvider.post(UrlConstants.downloadRepositoryReport, data, {responseType: 'blob'});
+  }
+
+
 
 
 

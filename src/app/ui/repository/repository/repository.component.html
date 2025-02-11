@@ -16,9 +16,12 @@
     <div class="card-body" >
     <div class="d-flex justify-content-between" style="margin-bottom:6px">
       <div class="mr-auto" style="width: 100%;margin-left: -13px">
-        <div class="sb-example-1">
+        <div class="sb-example-repository">
           <div class="search">
             <input type="text" class="searchTerm" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)" >
+            <button class="btn btn-success btn-sm ml-1"  (click)="downloadRepositoryReport()" style="height: 30px;">
+              <i class="fa fa-file-excel-o"></i> Export to Excel
+            </button>
           </div>
         </div>
       </div>
