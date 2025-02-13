@@ -1,4 +1,4 @@
-import {Component,OnInit, TemplateRef, ViewChild} from "@angular/core";
+import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from "@angular/core";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {DashboardService} from "../../services/dashboard.service";
@@ -9,7 +9,7 @@ import {SpinnerService} from "../../services/spinner.service";
 import {ColDef, GridApi} from 'ag-grid-community';
 import {AddNewUserComponent} from "./add-new-user/add-new-user.component";
 import {UrlConstants} from "../../utilities/UrlConstants";
-import {AppConstants} from "../../utilities/AppConstants";
+import {UploadErrorsComponent} from "../file-upload/file-upload-errors/upload-errors.component";
 
 @Component({
   selector: 'app-user-master',
@@ -18,6 +18,7 @@ import {AppConstants} from "../../utilities/AppConstants";
 })
 export class UserMasterComponent {
   @ViewChild('userMappingTemplate', { static: true }) userMappingTemplate!: TemplateRef<any>;
+  @Output() result: EventEmitter<any> = new EventEmitter<any>();
 
   search = '';
   gridApi !: GridApi;
@@ -28,10 +29,11 @@ export class UserMasterComponent {
   titlePadding: any = {left: 0, top: 0, right: 0, bottom: 10};
   rowData?: any
   datafifo: any = []
+  errData: { errMsg: string; errSuggestion: string }[] = [];
 
   afuConfig = {
     multiple: false,
-    formatsAllowed: '.xlsx',
+    formatsAllowed: '.xlsx,.xls',
     maxSize: 100,
     hideProgressBar: false,
     hideResetBtn: true,
@@ -41,18 +43,14 @@ export class UserMasterComponent {
       uploadBtn: 'Upload',
       dragNDropBox: 'Drag N Drop',
       attachPinBtn: 'Attach Files...',
-      afterUploadMsg_success: 'Successfully Uploaded !',
-      afterUploadMsg_error: 'Upload Failed !'
+      afterUploadMsg_success: 'Successfully Uploaded!',
+      afterUploadMsg_error: 'Upload Failed!'
     },
     uploadAPI: {
       url: UrlConstants.uploadUserMasterData,
-      // headers: {
-      //   Authorization: `${this.cryptoService.decryptData(this.cookie.get(AppConstants.AUTHKEY))}`,
-      //   AppId: `${this.appId}`,
-      //   screenId: `${this.screenId}`,
-      // }
     }
   };
+
 
   public defaultColDef: ColDef = {
     filter: true,
@@ -176,19 +174,7 @@ export class UserMasterComponent {
 
 
   openTemplateDownloadWarning() {
-    this.dialog.open(this.userMappingTemplate, {width: '600px'});
-  }
-
-  afterUpload($event:any) {
-    const response = JSON.parse($event.response);
-    console.log(response);
-    if (response.retVal === -222) {
-      this.toaster.showWarning(response.retMsg);
-    } else if (response.retVal === 0) {
-      //this.dialog.close(true);
-    } else {
-      this.toaster.showError('Something went wrong, Please contact administrator');
-    }
+    this.dialog.open(this.userMappingTemplate, {width: '800px', height: '400px'});
   }
 
   downloadUserMappingTemplate() {
@@ -205,10 +191,28 @@ export class UserMasterComponent {
     }));
   }
 
-  uploadUserMapping(){
 
+  afterUpload(event: any) {
+    if (event.body) {
+      const retVal = event.body.retVal;
 
-
+      if (retVal === -1) {
+        this.dialog.open(UploadErrorsComponent, {
+          width: '800px',
+          height: '500px',
+          data: { errorData: event.body?.Errordata }
+        });
+      } else if (retVal === -2) {
+        this.toaster.showSuccess('Please choose a valid file');
+      } else if (retVal === 0) {
+        this.toaster.showSuccess('Successfully Uploaded!');
+      } else {
+        this.toaster.showError('Unexpected error occurred during upload.');
+      }
+    } else {
+      // Handle the case when event.body is undefined or null
+      this.toaster.showError('No response data received.');
+    }
   }
 
 

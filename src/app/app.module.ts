@@ -34,6 +34,8 @@ import { UserMasterComponent } from './ui/user-master/user-master.component';
 import { AddNewUserComponent } from './ui/user-master/add-new-user/add-new-user.component';
 import { MatTooltipModule} from "@angular/material/tooltip";
 import { AngularFileUploaderModule } from "angular-file-uploader";
+import { MatDialogModule } from '@angular/material/dialog';
+import { UploadErrorsComponent } from './ui/file-upload/file-upload-errors/upload-errors.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     AllRequestComponent,
     UserMasterComponent,
     AddNewUserComponent,
+    UploadErrorsComponent,
 
   ],
   imports: [
@@ -70,7 +73,8 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     NgxMatSelectSearchModule,
     MatTabsModule,
     MatTooltipModule,
-    AngularFileUploaderModule
+    AngularFileUploaderModule,
+    MatDialogModule
   ],
   providers: [
     CookieService,
@@ -90,7 +94,7 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
     AllRequestComponent,
     MatTabsModule
   ],
-  entryComponents:[EventPopupComponent],
+  entryComponents:[EventPopupComponent,UploadErrorsComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent],
 
