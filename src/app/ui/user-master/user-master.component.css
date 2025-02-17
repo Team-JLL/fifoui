@@ -8,9 +8,8 @@
   font-family: "Calibri";
   font-weight: bold;
   color: #005193;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  padding-left: 5px
 }
 
 .form-header-3::first-letter{
@@ -20,28 +19,24 @@
 }
 
 /*global search */
-.sb-example-usermaster .searchTerm {
-  width: 105%;
+.sb-example-userMaster .searchTerm {
+  width: 100%;
   border: 1px solid #5e9cd3;
   padding: 4px;
   border-radius: 5px 5px 5px 5px;
   outline: none;
-  margin-right: 80px;
   color: #000000;
 }
 
 .file-upload-heading {
   color: #005193;
   font-size: 21px;
-  font-family: 'Signika',
-  sans-serif;
+  font-family: sans-serif;
   margin-bottom: 0;
-  font-style: italic;
 }
 .file-upload-heading-info {
-  margin-top: 0;
-  font-size: 11px;
-  margin-bottom: -17px;
-  font-style: italic;
+  margin-top: -20px;
+  font-size: 12px;
   color: gray;
 }
+

@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { Component, Inject, OnInit, Output, EventEmitter } from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-upload-errors',
@@ -24,11 +24,21 @@ export class UploadErrorsComponent implements OnInit {
     { headerName: 'Error Message', field: 'errMsg', sortable: true, filter: true,  width:420}
   ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+  @Output() fileCleared: EventEmitter<void> = new EventEmitter<void>();
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<UploadErrorsComponent>
+  ) {}
 
   ngOnInit() {
     if (this.data?.errorData) {
       this.rowData = this.data.errorData;
     }
+  }
+
+  closeDialog() {
+    this.fileCleared.emit(); // Emit the event to clear the file
+    this.dialogRef.close(); // Close the modal dialog
   }
 }

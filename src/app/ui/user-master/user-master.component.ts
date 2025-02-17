@@ -10,6 +10,7 @@ import {ColDef, GridApi} from 'ag-grid-community';
 import {AddNewUserComponent} from "./add-new-user/add-new-user.component";
 import {UrlConstants} from "../../utilities/UrlConstants";
 import {UploadErrorsComponent} from "../file-upload/file-upload-errors/upload-errors.component";
+import {AngularFileUploaderComponent} from "angular-file-uploader";
 
 @Component({
   selector: 'app-user-master',
@@ -19,6 +20,8 @@ import {UploadErrorsComponent} from "../file-upload/file-upload-errors/upload-er
 export class UserMasterComponent {
   @ViewChild('userMappingTemplate', { static: true }) userMappingTemplate!: TemplateRef<any>;
   @Output() result: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('usrMasterBulkUpload', {static: true})
+  private usrMasterBulkUpload!: AngularFileUploaderComponent;
 
   search = '';
   gridApi !: GridApi;
@@ -43,14 +46,16 @@ export class UserMasterComponent {
       uploadBtn: 'Upload',
       dragNDropBox: 'Drag N Drop',
       attachPinBtn: 'Attach Files...',
-      afterUploadMsg_success: 'Successfully Uploaded!',
-      afterUploadMsg_error: 'Upload Failed!'
+      afterUploadMsg_success: '',
+      afterUploadMsg_error: '',
+      sizeLimit: 'Size Limit'
     },
     uploadAPI: {
       url: UrlConstants.uploadUserMasterData,
     }
   };
 
+  selectedFile: any;
 
   public defaultColDef: ColDef = {
     filter: true,
@@ -174,7 +179,7 @@ export class UserMasterComponent {
 
 
   openTemplateDownloadWarning() {
-    this.dialog.open(this.userMappingTemplate, {width: '800px', height: '400px'});
+    this.dialog.open(this.userMappingTemplate, {width: '50vw', height: '25vw'});
   }
 
   downloadUserMappingTemplate() {
@@ -193,28 +198,46 @@ export class UserMasterComponent {
 
 
   afterUpload(event: any) {
+
     if (event.body) {
       const retVal = event.body.retVal;
+      let newMessage = '';
 
       if (retVal === -1) {
         this.dialog.open(UploadErrorsComponent, {
           width: '800px',
           height: '500px',
-          data: { errorData: event.body?.Errordata }
+          data: {errorData: event.body?.Errordata}
         });
-      } else if (retVal === -2) {
-        this.toaster.showSuccess('Please choose a valid file');
-      } else if (retVal === 0) {
-        this.toaster.showSuccess('Successfully Uploaded!');
-      } else {
-        this.toaster.showError('Unexpected error occurred during upload.');
+        this.toaster.showError('Upload Failed!');
+        // newMessage = 'Upload Failed!';
+        // this.afuConfig = {
+        //   ...this.afuConfig,
+        //   replaceTexts: {...this.afuConfig.replaceTexts, afterUploadMsg_error: newMessage}
+        // };
       }
-    } else {
-      // Handle the case when event.body is undefined or null
+      else if (retVal === -888) {
+        this.dialog.open(UploadErrorsComponent, {
+          width: '800px',
+          height: '500px',
+          data: {errorData: event.body?.Errordata}
+        });
+        this.toaster.showError('Upload Failed! Mapping already exists');
+      }
+      else if (retVal === -2) {
+        this.toaster.showError('Please choose a valid file');
+      }
+      else if (retVal === 1) {
+        this.toaster.showSuccess('Successfully Uploaded!');
+      }else if (retVal === -777){
+        this.toaster.showError('Failed to save new mapping.');
+      }
+      else {
+        this.toaster.showError('Please upload valid file.');
+      }
+    }else {
       this.toaster.showError('No response data received.');
     }
   }
-
-
 
 }

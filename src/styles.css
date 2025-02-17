@@ -227,3 +227,38 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", serif; }
   margin-bottom: -30px;
   margin-top: 25px
 }
+
+/*angular-file-uploader style*/
+.afu-select-btn {
+  background-color: #0069d9 !important;
+}
+
+.afu-upload-btn {
+  background-color: #28a745 !important;
+}
+
+.row.afu-valid-file {
+  display: flex;
+  align-items: center;
+  justify-content:space-between !important;
+}
+
+.col-xs-3 { /*padMarg*/
+  flex: 1  !important;
+  margin-bottom: 15px !important;
+}
+
+.textOverflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 2  !important;
+}
+
+.col-xs-1 {
+  flex: 0  !important;
+  cursor: pointer !important;
+  color: red !important;
+  margin-bottom: 15px !important
+}
+/*angular-file-uploader style*/
