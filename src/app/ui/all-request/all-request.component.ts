@@ -40,36 +40,7 @@ export class AllRequestComponent {
     cellStyle: {textAlign: 'left'},
   };
 
-  public columnDefs: ColDef[] = [
-    // {field: '', checkboxSelection: true, width: 30, floatingFilter:false},
-    // {field: 'index', headerName: 'No', width: 80, valueGetter: (node: any) => String(node.node.rowIndex + 1)},
-    //{field: 'fifoReportId', headerName: 'FIFO Id', width: 100, checkboxSelection: true},
-    {field: 'fifoReportId', headerName: 'FIFO Id', width: 100, floatingFilter: false ,cellClass: 'cellCenter',
-      checkboxSelection : function(params) {
-        if (params.data.fifoRequestFlag.match('B')) {
-          return false;
-        }
-        return true;
-      },
-    },
-    {field: 'validFrom', headerName: 'Valid From', width: 150, },
-    {field: 'validTo', headerName: 'Valid To', width: 150, },
-    {field: 'depotCd', headerName: 'Depot', width: 100, },
-    {field: 'depotDesc', headerName: 'Depot Desc', width: 220, },
-    {field: 'salesDocType', headerName: 'Sales doc type',width: 150, },
-    {field: 'mainMaterialCd', headerName: 'Main item', width: 150, },
-    {field: 'mainMaterialDesc', headerName: 'Main item desc.', width: 300, },
-    {field: 'childMtrlCd', headerName: 'Obstacle item', width: 150, },
-    {field: 'childMaterialDesc', headerName: 'Obstacle item desc.', width: 300, },
-    {field: 'uomName', headerName: 'UOM',  width: 100, },
-    {field: 'genStoreStock', headerName: 'General',width: 170,cellStyle: {textAlign: 'right'}},
-    {field: 'gen1StoreStock', headerName: 'General1',width: 170,cellStyle: {textAlign: 'right'}},
-    {field: 'slobStoreStock', headerName: 'SLOB',width: 170,cellStyle: {textAlign: 'right'}},
-    {field: 'fifoRequestFlag', headerName: 'SLOB',width: 170,cellStyle: {textAlign: 'right'}, hide:true},
-    {field: 'creationBy', headerName: 'Requested By',width: 170,cellStyle: {textAlign: 'left'}},
-  ];
-
-
+  public columnDefs!: ColDef[]
 
   constructor(private dialog: MatDialog,
               private router: Router,
@@ -84,12 +55,47 @@ export class AllRequestComponent {
   ngOnInit(): void {
     this.getFifoMasterData();
 
-    if(this.role.match('FIFOADM')){
+    if(this.role.match('FIFOADM') || this.role.match('FIFOAFUSR')){
       this.hideBtn = true
     }else {
       this.hideBtn = false
     }
 
+    const userRole = this.role;
+
+    this.columnDefs = [
+      {
+        // {field: '', checkboxSelection: true, width: 30, floatingFilter:false},
+        // {field: 'index', headerName: 'No', width: 80, valueGetter: (node: any) => String(node.node.rowIndex + 1)},
+        //{field: 'fifoReportId', headerName: 'FIFO Id', width: 100, checkboxSelection: true},
+        field: 'fifoReportId',
+        headerName: 'FIFO Id',
+        width: 100,
+        floatingFilter: false,
+        cellClass: 'cellCenter',
+        checkboxSelection: (params) => {
+          if (params.data.fifoRequestFlag.match('B') || userRole.match('FIFOADM') || userRole.match('FIFOAFUSR')) {
+            return false;
+          }
+          return true;
+        },
+      },
+      { field: 'validFrom', headerName: 'Valid From', width: 150 },
+      { field: 'validTo', headerName: 'Valid To', width: 150 },
+      { field: 'depotCd', headerName: 'Depot', width: 100 },
+      { field: 'depotDesc', headerName: 'Depot Desc', width: 220 },
+      { field: 'salesDocType', headerName: 'Sales doc type', width: 150 },
+      { field: 'mainMaterialCd', headerName: 'Main item', width: 150 },
+      { field: 'mainMaterialDesc', headerName: 'Main item desc.', width: 300 },
+      { field: 'childMtrlCd', headerName: 'Obstacle item', width: 150 },
+      { field: 'childMaterialDesc', headerName: 'Obstacle item desc.', width: 300 },
+      { field: 'uomName', headerName: 'UOM', width: 100 },
+      { field: 'genStoreStock', headerName: 'General', width: 170, cellStyle: { textAlign: 'right' } },
+      { field: 'gen1StoreStock', headerName: 'General1', width: 170, cellStyle: { textAlign: 'right' } },
+      { field: 'slobStoreStock', headerName: 'SLOB', width: 170, cellStyle: { textAlign: 'right' } },
+      { field: 'fifoRequestFlag', headerName: 'SLOB', width: 170, cellStyle: { textAlign: 'right' }, hide: true },
+      { field: 'creationBy', headerName: 'Requested By', width: 170, cellStyle: { textAlign: 'left' } },
+    ];
   }
 
   activitySelected(event: any): void {
