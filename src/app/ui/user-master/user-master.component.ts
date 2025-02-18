@@ -41,7 +41,7 @@ export class UserMasterComponent {
     hideProgressBar: false,
     hideResetBtn: true,
     replaceTexts: {
-      selectFileBtn: 'Select Template file to upload',
+      selectFileBtn: 'Choose file to upload',
       resetBtn: 'Reset',
       uploadBtn: 'Upload',
       dragNDropBox: 'Drag N Drop',
@@ -179,7 +179,7 @@ export class UserMasterComponent {
 
 
   openTemplateDownloadWarning() {
-    this.dialog.open(this.userMappingTemplate, {width: '50vw', height: '25vw'});
+    this.dialog.open(this.userMappingTemplate, {width: '50vw', height: '24vw'});
   }
 
   downloadUserMappingTemplate() {

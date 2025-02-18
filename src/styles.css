@@ -235,6 +235,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", serif; }
 
 .afu-upload-btn {
   background-color: #28a745 !important;
+  padding: 5px !important;
 }
 
 .row.afu-valid-file {
@@ -260,5 +261,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", serif; }
   cursor: pointer !important;
   color: red !important;
   margin-bottom: 15px !important
+}
+
+.afu-constraints-info {
+  font-size: 12px!important;
 }
 /*angular-file-uploader style*/

@@ -52,66 +52,6 @@
 </div>
 </div>
 
-<!--<ng-template #userMappingTemplate>-->
-<!--  <div class="container-fluid">-->
-<!--    <div class="row">-->
-<!--      <div class="col-md-10">-->
-<!--        <p class="file-upload-heading">User Master - Excel Upload</p>-->
-<!--        <p class="file-upload-heading-info">-->
-<!--          Fill-up excel in the given format and upload.-->
-<!--        </p>-->
-<!--      </div>-->
-<!--      <div class="col-md-2" align="right">-->
-<!--        <button closeButton mat-dialog-close style="margin-top:5px"></button>-->
-<!--      </div>-->
-<!--    </div>-->
-
-<!--    <div style="height: 20px;"></div>-->
-
-<!--    <div class="row">-->
-<!--      <div class="col-md-12">-->
-<!--        <div class="container-fluid border border-primary">-->
-<!--          <div class="row">-->
-
-<!--            <div class="col-md-6">-->
-<!--              <div style="height: 10px;"></div>-->
-<!--              <p class="file-upload-heading">Upload</p>-->
-<!--              <div style="height: 20px;"></div>-->
-<!--              <div class="file-uploader p-0" style="margin-left: -13px">-->
-<!--                <angular-file-uploader-->
-<!--                  [config]="afuConfig"-->
-<!--                  (ApiResponse)="afterUpload($event)">-->
-<!--                </angular-file-uploader>-->
-<!--              </div>-->
-<!--              <div style="height: 10px;"></div>-->
-<!--            </div>-->
-
-<!--            <div class="col-md-5">-->
-<!--              <div style="height: 10px;"></div>-->
-<!--              <p class="file-upload-heading">Download Template</p>-->
-<!--              <div class="p-0">-->
-<!--                <button type="button" class="btn upload-btn btn-sm mt-1" (click)="downloadUserMappingTemplate()">-->
-<!--                  <i class="fa fa-cloud-download"> &nbsp; Download Template</i>-->
-<!--                </button>-->
-<!--              </div>-->
-<!--              <div style="margin-left:-15px">-->
-<!--              <ul style="font-size: 13px; font-style: italic">-->
-<!--                <li>Download the template file if it is not already available</li>-->
-<!--                <li>Fill up the columns following the guidelines</li>-->
-<!--                <li>Save and Upload the file</li>-->
-<!--              </ul>-->
-<!--              </div>-->
-<!--            </div>-->
-
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</ng-template>-->
-
-
-
 <ng-template #userMappingTemplate>
   <div class="container-fluid">
     <div class="row">
@@ -130,11 +70,11 @@
 
     <div class="row">
       <div class="col-md-12">
-        <div class="container-fluid border">
+        <div class="container-fluid border" style="height: 17vw">
           <div style="height: 15px"></div>
           <div class="row">
             <!-- Download Template Section First -->
-            <div class="col-md-5">
+            <div class="col-md-6">
               <p class="file-upload-heading">Download Template</p>
 
               <button type="button" class="btn upload-btn btn-sm mt-1" (click)="downloadUserMappingTemplate()" style="margin-left: 20px">
@@ -148,7 +88,7 @@
             </div>
 
             <!-- Upload Section Second -->
-            <div class="col-md-7">
+            <div class="col-md-6">
               <p class="file-upload-heading">Upload</p>
               <div style="height: 15px"></div>
               <angular-file-uploader
