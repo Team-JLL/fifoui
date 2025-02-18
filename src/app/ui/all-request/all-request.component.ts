@@ -74,7 +74,7 @@ export class AllRequestComponent {
         floatingFilter: false,
         cellClass: 'cellCenter',
         checkboxSelection: (params) => {
-          if (params.data.fifoRequestFlag.match('B') || userRole.match('FIFOADM') || userRole.match('FIFOAFUSR')) {
+          if (params.data.fifoRequestFlag.match('B') || userRole.match('FIFOADM')) {
             return false;
           }
           return true;
