@@ -55,7 +55,7 @@ export class AllRequestComponent {
   ngOnInit(): void {
     this.getFifoMasterData();
 
-    if(this.role.match('FIFOADM')){
+    if(this.role.match('FIFOADM') || this.role.match('FIFOAFUSR')){
       this.hideBtn = true
     }else {
       this.hideBtn = false
@@ -74,7 +74,7 @@ export class AllRequestComponent {
         floatingFilter: false,
         cellClass: 'cellCenter',
         checkboxSelection: (params) => {
-          if (params.data.fifoRequestFlag.match('B') || userRole.match('FIFOADM')) {
+          if (params.data.fifoRequestFlag.match('B') || userRole.match('FIFOADM') || this.role.match('FIFOAFUSR')) {
             return false;
           }
           return true;

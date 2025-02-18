@@ -12,7 +12,8 @@ export const environment = {
   removeConsolePrints: false
 };
 
-  /*build test/uat : ng build --configuration test --base-href */
+  /*build test : ng build --configuration test --base-href */
+  /*build uat : ng build --configuration uat --base-href */
   /*build Live     : ng build --configuration production --base-href */
 
 
