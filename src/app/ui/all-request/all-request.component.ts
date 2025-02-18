@@ -55,7 +55,7 @@ export class AllRequestComponent {
   ngOnInit(): void {
     this.getFifoMasterData();
 
-    if(this.role.match('FIFOADM') || this.role.match('FIFOAFUSR')){
+    if(this.role.match('FIFOADM')){
       this.hideBtn = true
     }else {
       this.hideBtn = false
