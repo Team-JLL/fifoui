@@ -4,6 +4,7 @@ export class UrlConstants {
 
   public static api = environment.api;
   public static loginAppUrl = environment.login_app_url;
+  public static profilePageUrl: string = environment.profile_url;
 
   /*controllers*/
   public static  fifoApi = UrlConstants.api +  'fifoApi/';

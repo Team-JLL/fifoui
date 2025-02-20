@@ -24,10 +24,12 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() {
   }
 
-
-
   onMenuClicked() {
     this.menuClicked.emit();
+  }
+
+  loadProfile() {
+    window.location.href = UrlConstants.profilePageUrl
   }
 
   logOut() {

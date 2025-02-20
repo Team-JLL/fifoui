@@ -17,7 +17,7 @@
   </div>
 
   <mat-menu #dropDownMenu >
-    <button mat-menu-item  style="font-size: 12px;border: none;" >
+    <button mat-menu-item  style="font-size: 12px;border: none;" (click)="loadProfile()">
       <mat-icon style="font-size: 18px; margin-top: 2px; color: #3f51b5">account_circle</mat-icon>My Profile
     </button>
     <button mat-menu-item  style="font-size: 12px;border: none;" (click)="logOut()">
