@@ -3,6 +3,7 @@ export const environment = {
   envName: 'prod',
   api:  window.location.origin + '/jllappsapi/',
   login_app_url: window.location.origin + '/',
+  profile_url: window.location.origin + '/#/my-profile',
   runMode: 'PROD',
   buildType: '(LIVE BUILD 1.0.01)',
   removeConsolePrints: true

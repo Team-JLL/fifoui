@@ -7,6 +7,7 @@ export const environment = {
   envName: 'dev',
   api: 'http://localhost:8920/jllappsapi/',
   login_app_url: 'http://localhost:5000/',
+  profile_url: 'http://localhost:5000/#/my-profile',
   runMode: 'TEST',
   buildType: ' (DEVELOPMENT BUILD 1.0.01)',
   removeConsolePrints: false
