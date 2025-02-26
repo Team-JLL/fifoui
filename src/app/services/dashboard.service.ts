@@ -71,8 +71,9 @@ export class DashboardService {
     return this.apiProvider.get(UrlConstants.getRequestHistory);
   }
 
-  public getRepositoryData(): Observable<any> {
-    return this.apiProvider.get(UrlConstants.getRepositoryData);
+  public getRepositoryData(searchCriteria:any): Observable<any> {
+    const data = {searchCriteria}
+    return this.apiProvider.post(UrlConstants.getRepositoryData,data,'');
   }
 
   public RejectionFromAllStage(selectedRequests: any, rejectReson: any): Observable<any> {
@@ -135,8 +136,8 @@ export class DashboardService {
     return this.apiProvider.post(UrlConstants.downloadFIFOMaster, data, {responseType: 'blob'});
   }
 
-  public downloadRepositoryReport(): Observable<any> {
-    const data = {}
+  public downloadRepositoryReport(searchCriteria:any): Observable<any> {
+    const data = {searchCriteria}
     return this.apiProvider.post(UrlConstants.downloadRepositoryReport, data, {responseType: 'blob'});
   }
 

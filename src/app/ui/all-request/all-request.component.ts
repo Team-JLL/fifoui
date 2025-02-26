@@ -8,6 +8,7 @@ import {SnackBarService} from "../../services/snack-bar.service";
 import {AppConstants} from "../../utilities/AppConstants";
 import {CryptoService} from "../../services/crypto.service";
 import {CookieService} from "ngx-cookie-service";
+import {SpinnerService} from "../../services/spinner.service";
 
 @Component({
   selector: 'app-all-request',
@@ -47,7 +48,7 @@ export class AllRequestComponent {
               private dashboardservice: DashboardService,
               private toaster: SnackBarService,
               private Cryptoservice: CryptoService,
-              private cookie: CookieService) {
+              private cookie: CookieService,private spinner : SpinnerService) {
 
     this.role = this.Cryptoservice.decryptData(this.cookie.get(AppConstants.role));
   }
@@ -135,9 +136,11 @@ export class AllRequestComponent {
   }
 
   getFifoMasterData() {
+    const spine = this.spinner.start();
     this.dashboardservice.getFifoMasterData().subscribe(response => {
       this.rowData = response.data
       this.slctdFifoCount = response.slctdFifoCount
+      this.spinner.stop(spine);
     })
   }
 

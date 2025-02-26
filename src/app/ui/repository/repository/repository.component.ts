@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {ColDef, GridApi} from 'ag-grid-community';
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
@@ -9,6 +9,14 @@ import {CookieService} from "ngx-cookie-service";
 import {SpinnerService} from "../../../services/spinner.service";
 import {BypassTagsComponent} from "../../final-bypass/bypass-tags/bypass-tags.component";
 import {EventPopupComponent} from "../../event-popup/event-popup.component";
+import { MatTooltipModule} from "@angular/material/tooltip";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {ReplaySubject, Subject, takeUntil} from "rxjs";
+import {User} from "../../../model/User"
+import {Depot} from "../../../model/Depot"
+import {Channel} from "../../../model/Channel"
+import {Products} from "../../../model/Products"
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-repository',
@@ -24,9 +32,44 @@ export class RepositoryComponent {
   padding: any = {left: 5, top: 5, right: 5, bottom: 5};
   titlePadding: any = {left: 0, top: 0, right: 0, bottom: 10};
   rowData?: any
-  datafifo: any = []
   history: any;
 
+  @ViewChild('toInput', {static: true}) toInput: ElementRef | any;
+  @ViewChild('fromInput', {static: true}) fromInput: ElementRef | any;
+
+  repoForm!: FormGroup;
+  hideToggle: boolean = true
+  toggleMatIcon = 'keyboard_double_arrow_down'
+  searchText: string = '';
+
+  repositoryList = []
+  filteredList = []
+
+  dateFrom: string | null = null;
+  dateTo: string | null = null;
+  minDate = moment().toDate();
+
+  protected _onDestroy = new Subject<void>();
+
+  users!: User[];
+  public userFIlter: FormControl = new FormControl();
+  public filteredUsers: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
+  private onUDestroy = new Subject<void>();
+
+  depots!: Depot[];
+  public depotFIlter: FormControl = new FormControl();
+  public filteredDepots: ReplaySubject<Depot[]> = new ReplaySubject<Depot[]>(1);
+  private onDDestroy = new Subject<void>();
+
+  channels!: Channel[];
+  public channelFIlter: FormControl = new FormControl();
+  public filteredChannels: ReplaySubject<Channel[]> = new ReplaySubject<Channel[]>(1);
+  private onCDestroy = new Subject<void>();
+
+  products!: Products[];
+  public itemFilter: FormControl = new FormControl();
+  public filteredItems: ReplaySubject<Products[]> = new ReplaySubject<Products[]>(1);
+  private onPDestroy = new Subject<void>();
 
   public defaultColDef: ColDef = {
     filter: true,
@@ -80,18 +123,49 @@ export class RepositoryComponent {
   ];
 
   constructor(private dialog: MatDialog, private router: Router, private dashboardservice: DashboardService,
-              private toaster: SnackBarService, private Cryptoservice: CryptoService,
+              private toaster: SnackBarService, private Cryptoservice: CryptoService,private fb: FormBuilder,
               private cookie: CookieService, private spinner : SpinnerService) {
+              this.repoForm = this.fb.group({
+                requestCode: null,
+                status: null,
+                tag: null,
+                liquidationDate: null,
+                validFrom: null,
+                validTo: null,
+                createdFrom: null,
+                createdTo: null,
+                depot: null,
+                channel: null,
+                mainItem: null,
+                obstacleItem: null,
+              })
   }
 
   ngOnInit(): void {
+    this.getDetailsForAddNewMapping()
     this.getRepositoryData();
   }
 
+
   getRepositoryData() {
-    this.dashboardservice.getRepositoryData().subscribe(response => {
-      this.rowData = response.data
-    })
+
+    const spine = this.spinner.start();
+
+    this.dashboardservice.getRepositoryData(this.repoForm.value).subscribe(response => {
+      this.rowData = response.data;
+      this.spinner.stop(spine);
+      if (response['retVal'] == 0) {
+        this.repositoryList = response['data']
+        this.filteredList = response['data']
+        this.toaster.showSuccess(this.repositoryList.length + ' record found');
+      } else {
+        if (response['retVal'] === -1) {
+          this.toaster.showWarning(response['retMsg']);
+        } else {
+          this.toaster.showError('Something went Wrong',);
+        }
+      }
+    });
   }
 
   onGridReady(params:any): void {
@@ -123,11 +197,14 @@ export class RepositoryComponent {
     })
   }
 
-  downloadRepositoryReport(){
-
+  downloadRepositoryReport() {
+    const spine = this.spinner.start();
     let fileName = 'FIFO_Completion_Report.xlsx';
 
-    this.dashboardservice.downloadRepositoryReport().subscribe((response => {
+    // Get filter values from the form
+    const filterParams = this.repoForm.value;
+
+    this.dashboardservice.downloadRepositoryReport(filterParams).subscribe(response => {
       const url = window.URL.createObjectURL(response);
       const a = document.createElement('a');
       document.body.appendChild(a);
@@ -137,10 +214,169 @@ export class RepositoryComponent {
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
-    }));
 
+      this.spinner.stop(spine);
+    }, error => {
+      console.error('Error downloading report:', error);
+      this.spinner.stop(spine);
+    });
+  }
+
+
+
+  toggleSearchCriteria() {
+    this.hideToggle = !this.hideToggle; // Toggle the criteria variable
+    this.toggleMatIcon = this.hideToggle ? 'keyboard_double_arrow_up' : 'keyboard_double_arrow_down'
+  }
+
+
+  // searchForText(event: any) {
+  //   this.searchText = event.target.value
+  //   if(this.repositoryList.length <= 0) {
+  //     this.toaster.showWarning('Please apply search criteria to start a search/No Search Criteria Selected');
+  //   } else {
+  //     this.filteredList = this.repositoryList.filter(item => {
+  //       // const repoIdString = item.refCode.toLowerCase() + '/' + ((item.repoId + '').padStart(4, '0'))
+  //       const searchTextString = this.searchText.toString().toLowerCase();
+  //       // return repoIdString.includes(searchTextString) || item.refrnceId.toLowerCase().includes(searchTextString)
+  //       //   || item.hashTags.includes(searchTextString) || item.createdBy.includes(searchTextString)
+  //       //   || item.createdOn.includes(searchTextString) || item.child.toLowerCase().includes(searchTextString);
+  //     });
+  //   }
+  // }
+
+  fetchCompletedProjects() {
+    // this.message.loader('start', 'Fetching records for you');
+    // this.commonService.fetchCompletedProjects(this.repoForm.value).subscribe((resp => {
+    //   this.message.loader('end');
+    //   if (resp['retVal'] == 0) {
+    //     this.repositoryList = resp['data']
+    //     this.filteredList = resp['data']
+    //     this.toastr.success(this.repositoryList.length + ' record found', 'Success');
+    //   } else {
+    //     if (resp['retVal'] === -1) {
+    //       this.toastr.warning(resp['retMsg'], 'Save Failed');
+    //     } else {
+    //       this.toastr.error('Something went Wrong', 'Save Failed');
+    //     }
+    //   }
+    // }));
 
   }
 
+  getDetailsForAddNewMapping(){
+
+    this.dashboardservice.getDetailsForAddNewMapping().subscribe(response => {
+
+      this.depots = response['depotList'];
+      this.filteredDepots.next(this.depots.slice());
+      this.depotFIlter.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filteredDepotList();
+        });
+
+      this.channels = response['channelList'];
+      this.filteredChannels.next(this.channels.slice());
+      this.channelFIlter.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filteredChannelList();
+        });
+
+      this.products = response['productList'];
+      this.filteredItems.next(this.products.slice());
+      this.itemFilter.valueChanges
+        .pipe(takeUntil(this._onDestroy))
+        .subscribe(() => {
+          this.filteredItemList();
+        });
+
+    });
+
+  }
+
+  private filteredChannelList() {
+    let search = this.channelFIlter.value;
+    if (!search) {
+      this.filteredChannels.next(this.channels.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredChannels.next(
+      this.channels.filter(channel => channel.channelName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+
+  private filteredDepotList() {
+    let search = this.depotFIlter.value;
+    if (!search) {
+      this.filteredDepots.next(this.depots.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredDepots.next(
+      this.depots.filter(depot => depot.depotName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  private filteredItemList() {
+    let search = this.itemFilter.value;
+    if (!search) {
+      this.filteredItems.next(this.products.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    // filter the banks
+    this.filteredItems.next(
+      this.products.filter(products => products.mtrlName.toLowerCase().indexOf(search) > -1)
+    );
+  }
+
+  // setFromDate(event: any) {
+  //   if (event.value === null) {
+  //     // Handle the case when the user removes the date (event.value is null).
+  //     this.dateFrom = ''; // Set datePkd to an empty string or any other default value if needed.
+  //     this.fromInput.nativeElement.value = ''; // Clear the value of the other input field.
+  //     this.repoForm.get('dateFrom')?.setValue(null); // Set the form control value to null.
+  //   } else {
+  //     this.dateFrom = moment(event.value).format('YYYY-MM-DD')
+  //     this.fromInput.nativeElement.value = moment(event.value).format('DD-MM-YYYY');
+  //     this.repoForm.get('dateFrom')?.setValue(this.dateFrom);
+  //   }
+  // }
+  //
+  // setToDate(event: any) {
+  //   if (event.value === null) {
+  //     // Handle the case when the user removes the date (event.value is null).
+  //     this.dateTo = ''; // Set datePkd to an empty string or any other default value if needed.
+  //     this.toInput.nativeElement.value = ''; // Clear the value of the other input field.
+  //     this.repoForm.get('dateTo')?.setValue(null); // Set the form control value to null.
+  //   } else {
+  //     this.dateTo = moment(event.value).format('YYYY-MM-DD')
+  //     this.toInput.nativeElement.value = moment(event.value).format('DD-MM-YYYY');
+  //     this.repoForm.get('dateTo')?.setValue(this.dateTo);
+  //   }
+  // }
+
+  onDateUp(event: KeyboardEvent) {
+    const allowedCharacters = /^[0-9-]+$/;
+    const inputChar = event.key;
+
+    if (!allowedCharacters.test(inputChar)) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
+
+  clearFilteredData(){
+      this.repoForm.reset();
+      this.searchText = '';
+  }
 
 }

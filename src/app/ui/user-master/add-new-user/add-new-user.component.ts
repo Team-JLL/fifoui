@@ -8,6 +8,9 @@ import {Router} from "@angular/router";
 import {CryptoService} from "../../../services/crypto.service";
 import {CookieService} from "ngx-cookie-service";
 import {SpinnerService} from "../../../services/spinner.service";
+import {User} from "../../../model/User"
+import {Depot} from "../../../model/Depot"
+import {Channel} from "../../../model/Channel"
 
 
 @Component({
@@ -22,13 +25,13 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
   public userFIlter: FormControl = new FormControl();
   public filteredUsers: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
 
-  depots!: depot[];
+  depots!: Depot[];
   public depotFIlter: FormControl = new FormControl();
-  public filteredDepots: ReplaySubject<depot[]> = new ReplaySubject<depot[]>(1);
+  public filteredDepots: ReplaySubject<Depot[]> = new ReplaySubject<Depot[]>(1);
 
-  channels!: channel[];
+  channels!: Channel[];
   public channelFIlter: FormControl = new FormControl();
-  public filteredChannels: ReplaySubject<channel[]> = new ReplaySubject<channel[]>(1);
+  public filteredChannels: ReplaySubject<Channel[]> = new ReplaySubject<Channel[]>(1);
 
   requesterIds: any ;
   liquidUsrIds: any = [];
@@ -281,21 +284,4 @@ export class AddNewUserComponent   implements OnInit, AfterViewInit, OnDestroy{
     this.getDetailsForAddNewMapping();
   }
 
-}
-
-
-interface User {
-  usrId: number;
-  usrName: string;
-  usrType: string;
-}
-
-interface depot {
-  depotId: number;
-  depotName: string;
-}
-
-interface channel {
-  channelId: number;
-  channelName: string;
 }

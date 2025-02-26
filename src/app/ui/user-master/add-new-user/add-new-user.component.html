@@ -94,7 +94,7 @@
          <mat-select
                      required
                      multiple
-                     [(value)]="liquidUsrIds" >
+                     [(value)]="liquidUsrIds" (selectionChange)="onSelectionChange($event.value)" >
            <mat-option>
            <ngx-mat-select-search [formControl]="userFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"
@@ -114,7 +114,7 @@
        <mat-form-field class="full-width" appearance="outline">
          <mat-label>Demand Planner</mat-label>
          <mat-select required multiple
-                    [(value)]="dmndPlnrUsrIds">
+                    [(value)]="dmndPlnrUsrIds" (selectionChange)="onSelectionChange($event.value)">
            <mat-option>
            <ngx-mat-select-search [formControl]="userFIlter"
                                   [noEntriesFoundLabel]="'Nothing to display'"

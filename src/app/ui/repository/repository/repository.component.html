@@ -1,30 +1,226 @@
-<div class container>
+<div class="container">
   <div class="row">
     <div class="col-md-12">
       <img src="assets/dashboard.png" alt="" style="height: 20px;padding-left: 10px;margin-bottom: 10px">
       <label class="form-header-2">Repository</label>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-md-12 ">
+    <div class="col-md-12">
       <mat-divider></mat-divider>
     </div>
   </div>
+
   <div style="height:10px"></div>
 
   <div class="card">
-    <div class="card-body" >
-      <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
-            <div class="sb-example-repository w-100">
-              <div class="search d-flex align-items-center">
-                <input type="text" class="form-control searchTerm flex-grow-1" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)">
-                <button class="btn btn-secondary btn-sm ml-1" (click)="downloadRepositoryReport()" title="Excel report" style="height: 35px">
-                  <i class="fa fa-download"></i> Repository Report
-                </button>
-              </div>
-            </div>
-      </div>
+    <div class="card-body">
+      <div class="repository-container">
+        <p class="heading-p">
+          Search Criteria For Completed Bypass
+          <span class="toggle-bar" (click)="toggleSearchCriteria()" style="cursor: pointer">
+            <i class="material-icons">{{toggleMatIcon}}</i>
+          </span>
+        </p>
 
+        <form [formGroup]="repoForm">
+          <div class="form-wrapper" [hidden]="hideToggle">
+            <div class="wrapper">
+              <div class="inputs">
+                <label>Request Code</label>
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Enter Request Code</mat-label>
+                  <input matInput type="text" placeholder="Enter Request Code" formControlName="requestCode" >
+                </mat-form-field>
+              </div>
+
+              <div class="inputs">
+                <label>Status</label>
+                <mat-form-field class="full-width" appearance="outline"  >
+                  <mat-label>Select status</mat-label>
+                  <mat-select formControlName="status">
+                    <mat-option value="C">Completed</mat-option>
+                    <mat-option value="D">Canceled</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="inputs">
+                <label>Tag</label>
+                <mat-form-field class="full-width" appearance="outline"  >
+                  <mat-label>Select tag</mat-label>
+                  <mat-select formControlName="tag">
+                    <mat-option value="BY">Bypass</mat-option>
+                    <mat-option value="LQ">Upload New FIFO</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <!-- Date Fields -->
+              <div class="input-date">
+                <label>Liquidation Date</label>
+                <mat-form-field  style="width: 100%;"  >
+                  <input matInput type="text" [matDatepicker]="liquidationPicker" placeholder="DD-MM-YYYY"
+                         [maxLength]="10" (keydown)="onDateUp($event)" formControlName="liquidationDate">
+                  <mat-datepicker-toggle matIconSuffix [for]="liquidationPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #liquidationPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="input-date">
+                <label>Valid From</label>
+                <mat-form-field  style="width: 100%;" >
+                  <input matInput type="text" [matDatepicker]="validFromPicker" placeholder="DD-MM-YYYY"
+                         [maxLength]="10" (keydown)="onDateUp($event)" formControlName="validFrom">
+                  <mat-datepicker-toggle matIconSuffix [for]="validFromPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #validFromPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="input-date">
+                <label>Valid To</label>
+                <mat-form-field  style="width: 100%;" >
+                  <input matInput type="text" [matDatepicker]="validToPicker" placeholder="DD-MM-YYYY"
+                         [maxLength]="10" (keydown)="onDateUp($event)" formControlName="validTo">
+                  <mat-datepicker-toggle matIconSuffix [for]="validToPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #validToPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="input-date">
+                <label>Creation From</label>
+                <mat-form-field style="width: 100%;" >
+                  <input #fromInput matInput [matDatepicker]="creationFromPicker" placeholder="DD-MM-YYYY"
+                         [maxLength]="10" (keydown)="onDateUp($event)" formControlName="createdFrom"
+                         [max]="minDate">
+                  <mat-datepicker-toggle matIconSuffix [for]="creationFromPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #creationFromPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="input-date">
+                <label>Creation To</label>
+                <mat-form-field style="width: 100%;" >
+                  <input #toInput matInput [matDatepicker]="CreationToPicker" placeholder="DD-MM-YYYY"
+                         [maxLength]="10" (keydown)="onDateUp($event)"formControlName="createdTo"
+                         [max]="minDate">
+                  <mat-datepicker-toggle matIconSuffix [for]="CreationToPicker"></mat-datepicker-toggle>
+                  <mat-datepicker #CreationToPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <!-- Dropdowns -->
+              <div class="inputs">
+                <label>Depot</label>
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label>Select depot</mat-label>
+                  <mat-select formControlName="depot">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="depotFIlter"
+                                             [noEntriesFoundLabel]="'Nothing to display'"
+                                             [placeholderLabel]="'Search'">
+                        <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="0">None</mat-option>
+                    <mat-option *ngFor="let depot of filteredDepots | async" [value]="depot.depotId">
+                      {{depot.depotName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="inputs">
+                <label>Channel</label>
+                <mat-form-field class="full-width" appearance="outline" >
+                  <mat-label>Select channel</mat-label>
+                  <mat-select formControlName="channel">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="channelFIlter"
+                                             [noEntriesFoundLabel]="'Nothing to display'"
+                                             [placeholderLabel]="'Search'">
+                        <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="0">None</mat-option>
+                    <mat-option *ngFor="let channel of filteredChannels| async" [value]="channel.channelId">
+                      {{channel.channelName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="inputs">
+                <label>Main Item</label>
+                <mat-form-field class="full-width" appearance="outline" >
+                  <mat-label>Select Item</mat-label>
+                  <mat-select  formControlName="mainItem">
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="itemFilter"
+                                             [noEntriesFoundLabel]="'Nothing to display'"
+                                             [placeholderLabel]="'Search'">
+                        <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="0">None</mat-option>
+                    <mat-option *ngFor="let parentItem of filteredItems | async" [value]="parentItem.mtrlId">
+                      {{parentItem.mtrlName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div class="inputs">
+                <label>Obstacle Item</label>
+                <mat-form-field class="full-width" appearance="outline" >
+                  <mat-label>Select Item</mat-label>
+                  <mat-select formControlName="obstacleItem" >
+                    <mat-option>
+                      <ngx-mat-select-search [formControl]="itemFilter"
+                                             [noEntriesFoundLabel]="'Nothing to display'"
+                                             [placeholderLabel]="'Search'">
+                        <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option [value]="0">None</mat-option>
+                    <mat-option *ngFor="let childItem of filteredItems | async" [value]="childItem.mtrlId">
+                      {{childItem.mtrlName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <button class="btn applyFilterBtn" (click)="getRepositoryData()">Apply filter</button>
+              <button class="btn btn-light" (click)="clearFilteredData()">Clear filter</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Table -->
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
+        <div class="sb-example-repository w-100">
+          <div class="search d-flex align-items-center">
+            <input type="text" class="form-control searchTerm flex-grow-1" placeholder="Search here..."
+                   (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)">
+            <button class="btn btn-secondary btn-sm ml-1" (click)="downloadRepositoryReport()" title="Excel report" style="height: 35px">
+              <i class="fa fa-download"></i> Repository Report
+            </button>
+<!--            <button class="btn btn-sm ml-0" matTooltip="Filter">-->
+<!--              <img src="assets/filter.png" alt="" style="height: 35px;"/>-->
+<!--            </button>-->
+<!--            <button class="btn btn-sm ml-0" matTooltip="Clear filter">-->
+<!--              <img src="assets/clear_filter.png" alt="" style="height: 35px;"/>-->
+<!--            </button>-->
+          </div>
+        </div>
+      </div>
+      <span style="color: red; font-size: 10px;"><i class="fa fa-info-circle fa-xl"></i>
+        Showing data from the the past 6 months. Please apply filter to view more records</span>
       <div class="d-flex justify-content-between">
         <ag-grid-angular
           style="width: 100%; height: 550px; text-align: center"
@@ -40,15 +236,9 @@
           [columnDefs]="columnDefs"
           [defaultColDef]="defaultColDef"
           (cellClicked)="cellClickEvent($event)"
-          [filterable]="true" [showfilterrow]="true"
           [rowData]="rowData">
         </ag-grid-angular>
-    </div>
-
+      </div>
     </div>
   </div>
-
-  </div>
-
-
-
+</div>
