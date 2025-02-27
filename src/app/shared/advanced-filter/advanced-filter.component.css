@@ -1,0 +1,21 @@
+.filter-container {
+
+  width: 100%;
+}
+
+.filter-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5.13vw;
+  row-gap: 0.63vw;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
