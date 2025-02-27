@@ -153,6 +153,11 @@ export class DashboardService {
   }
 
 
+  public getAllUsersRoleWithModule(moduleCode:any) : Observable<any>{
+    const data = {moduleCode}
+    return this.apiProvider.post(UrlConstants.getAllUsersRoleWithModule,data, '')
+  }
+
 
 
 }

@@ -10,6 +10,7 @@ export class UrlConstants {
   public static  fifoApi = UrlConstants.api +  'fifoApi/';
   public static  fifoFlow = UrlConstants.api +  'fifoFlow/';
   public static  fifoReport = UrlConstants.api +  'fifoReport/';
+  public static  appApi = UrlConstants.api +  'appApi/';
 
   /*API Controller*/
   public static getFifoMaster = UrlConstants.fifoApi + 'getFifoMaster'
@@ -46,6 +47,8 @@ export class UrlConstants {
   public static downloadUserMasterTemplate = UrlConstants.fifoReport + 'downloadUserMasterTemplate'
   public static uploadUserMasterData = UrlConstants.fifoReport + 'uploadUserMasterData'
 
+
+  public static getAllUsersRoleWithModule = UrlConstants.appApi + 'getAllUsersRoleWithModule'
 
 
 

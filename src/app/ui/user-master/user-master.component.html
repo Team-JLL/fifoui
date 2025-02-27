@@ -1,55 +1,100 @@
 <div class="container-fluid">
-<div class="card" style="height: 100%">
-<div class="card-body" >
-  <div class="row">
-    <div class="col-md-12" align="left">
-      <label class="form-header-3">Requesters&nbsp;</label>
-      <label class="form-header-3">Mapping&nbsp;</label>
-      <small style="color: #005193">- Depot wise requester mapping for FIFO bypass . </small>
+  <div class="card" style="height: 100%">
+    <div class="card-body">
+      <mat-tab-group >
+        <!-- Requesters Mapping Tab -->
+        <mat-tab label="Requesters Mapping">
+          <div class="row">
+            <div class="col-md-12" align="left">
+              <label class="form-header-3">Requesters&nbsp;</label>
+              <label class="form-header-3">Mapping&nbsp;</label>
+              <small style="color: #005193">- Depot wise requester mapping for FIFO bypass.</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <mat-divider></mat-divider>
+            </div>
+          </div>
+
+          <div style="height: 20px"></div>
+
+          <div class="d-flex justify-content-between align-items-center flex-wrap">
+
+            <div class="sb-example-userMaster d-flex align-items-center flex-grow-1">
+              <input type="text" class="searchTerm mt-2" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)">
+            </div>
+
+            <button class="btn upload-btn btn-sm mr-1 mt-2" (click)="openTemplateDownloadWarning()" style="height: 30px;">
+              <i class="fa fa-cloud-upload"></i>&nbsp; Upload Mapping
+            </button>
+            <button class="btn mapping-btn btn-sm mr-1 mt-2" (click)="addNewUserMapping()" style="height: 30px;">
+              <i class="fa fa-user-plus"></i>&nbsp; New Mapping
+            </button>
+            <button class="btn user-master-download-btn btn-sm mr-1 mt-2" (click)="addNewUserMapping()" style="height: 30px;" title="Download Master Data">
+              <img src="assets/user_download.png" alt="" style="height: 25px;"/>&nbsp;User Master
+            </button>
+          </div>
+
+          <div style="height: 5px"></div>
+
+          <div class="d-flex justify-content-center p-0">
+            <ag-grid-angular
+              style="width: 100%; height: 500px;text-align: center"
+              class="ag-theme-balham"
+              [rowHeight]="26"
+              [paginationAutoPageSize]="true"
+              [paginationPageSize]="20"
+              [headerHeight]="35"
+              [scrollbarWidth]="2"
+              [pagination]="true"
+              (gridReady)="onGridReady($event)"
+              (cellClicked)="cellClickEvent($event)"
+              [columnDefs]="columnDefs"
+              [defaultColDef]="defaultColDef"
+              [filterable]="true"
+              [showfilterrow]="true"
+              [rowData]="rowData">
+            </ag-grid-angular>
+          </div>
+        </mat-tab>
+
+        <!-- FIFO Users Tab -->
+        <mat-tab label="FIFO Users" >
+          <div class="row">
+            <div class="col-md-8">
+              <p class="form-header-3">FIFO Users</p>
+              <p class="file-upload-heading-info">Manage FIFO Users here.</p>
+
+              <div class="details">
+                <table class="table-wrapper">
+                  <table>
+                    <tr>
+                      <th>No.</th>
+                      <th>User Code</th>
+                      <th>User Name</th>
+                      <th>User Email</th>
+                      <th>FIFO Portal Role Access</th>
+                    </tr>
+                    <tr *ngFor="let user of fifoUserAccessList; let index = index">
+                      <td>{{index + 1}}</td>
+                      <td>{{user.userCode}}
+                      <td>{{user.UserName}}</td>
+                      <td>{{user.UserEmail}}</td>
+                      <td>{{user.RoleName}}</td>
+                    </tr>
+                  </table>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12 ">
-      <mat-divider></mat-divider>
-    </div>
-  </div>
-
-  <div style="height: 20px"></div>
-
-  <div class="d-flex justify-content-between align-items-center flex-wrap">
-      <button class="btn upload-btn btn-sm mr-1 mt-2" (click)="openTemplateDownloadWarning()" style="height: 30px;">
-        <i class="fa fa-cloud-upload"> &nbsp; Upload Mapping</i>
-      </button>
-      <button class="btn mapping-btn btn-sm mr-1 mt-2" (click)="addNewUserMapping()" style="height: 30px;">
-        <i class="fa fa-user-plus"> &nbsp; New Mapping</i>
-      </button>
-      <div class="sb-example-userMaster d-flex align-items-center flex-grow-1">
-        <input type="text" class="searchTerm mt-2" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)">
-      </div>
-  </div>
-
-  <div style="height: 5px"></div>
-
-  <div class="d-flex justify-content-center p-0" >
-      <ag-grid-angular
-        style="width: 100%; height: 500px;text-align: center"
-        class="ag-theme-balham"
-        [rowHeight]="26"
-        [paginationAutoPageSize]="true"
-        [paginationPageSize]="20"
-        [headerHeight]="35"
-        [scrollbarWidth]="2"
-        [pagination]="true"
-        (gridReady)="onGridReady($event)"
-        (cellClicked)="cellClickEvent($event)"
-        [columnDefs]="columnDefs"
-        [defaultColDef]="defaultColDef"
-        [filterable]="true" [showfilterrow]="true"
-        [rowData]="rowData">
-      </ag-grid-angular>
-    </div>
-</div>
-</div>
 </div>
 
 <ng-template #userMappingTemplate>

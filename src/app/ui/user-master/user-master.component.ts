@@ -56,6 +56,8 @@ export class UserMasterComponent {
   };
 
   selectedFile: any;
+  fifoUserAccessList: any[] = [];
+
 
   public defaultColDef: ColDef = {
     filter: true,
@@ -100,6 +102,7 @@ export class UserMasterComponent {
 
   ngOnInit() {
     this.getBypassUserMapping()
+    this.getUsersRoleAccess()
   }
 
   onGridReady(params:any): void {
@@ -183,6 +186,7 @@ export class UserMasterComponent {
   }
 
   downloadUserMappingTemplate() {
+    const spine = this.spinner.start();
     this.dashboardservice.downloadUserMasterTemplate().subscribe((response => {
       const url = window.URL.createObjectURL(response);
       const a = document.createElement('a');
@@ -193,51 +197,92 @@ export class UserMasterComponent {
       a.click();
       window.URL.revokeObjectURL(url);
       a.remove();
+      this.spinner.stop(spine);
     }));
   }
 
 
   afterUpload(event: any) {
+    const spine = this.spinner.start();
 
-    if (event.body) {
+    try {
+      if (!event.body) {
+        this.toaster.showError('No response data received.');
+        return;
+      }
+
       const retVal = event.body.retVal;
-      let newMessage = '';
 
-      if (retVal === -1) {
-        this.dialog.open(UploadErrorsComponent, {
-          width: '800px',
-          height: '500px',
-          data: {errorData: event.body?.Errordata}
-        });
-        this.toaster.showError('Upload Failed!');
-        // newMessage = 'Upload Failed!';
-        // this.afuConfig = {
-        //   ...this.afuConfig,
-        //   replaceTexts: {...this.afuConfig.replaceTexts, afterUploadMsg_error: newMessage}
-        // };
+      switch (retVal) {
+        case -1:
+          this.dialog.open(UploadErrorsComponent, {
+            width: '800px',
+            height: '500px',
+            data: { errorData: event.body?.Errordata }
+          });
+          this.toaster.showError('Upload Failed!');
+          break;
+
+        case -888:
+          this.dialog.open(UploadErrorsComponent, {
+            width: '800px',
+            height: '500px',
+            data: { errorData: event.body?.Errordata }
+          });
+          this.toaster.showError('Upload Failed! Mapping already exists');
+          break;
+
+        case -2:
+          this.toaster.showError('Please choose a valid file');
+          break;
+
+        case 1:
+          this.toaster.showSuccess('Successfully Uploaded!');
+          break;
+
+        case -777:
+          this.toaster.showError('Failed to save new mapping.');
+          break;
+
+        default:
+          this.toaster.showError('Please upload a valid file.');
+          break;
       }
-      else if (retVal === -888) {
-        this.dialog.open(UploadErrorsComponent, {
-          width: '800px',
-          height: '500px',
-          data: {errorData: event.body?.Errordata}
-        });
-        this.toaster.showError('Upload Failed! Mapping already exists');
-      }
-      else if (retVal === -2) {
-        this.toaster.showError('Please choose a valid file');
-      }
-      else if (retVal === 1) {
-        this.toaster.showSuccess('Successfully Uploaded!');
-      }else if (retVal === -777){
-        this.toaster.showError('Failed to save new mapping.');
-      }
-      else {
-        this.toaster.showError('Please upload valid file.');
-      }
-    }else {
-      this.toaster.showError('No response data received.');
+    } catch (error) {
+      console.error('Error handling upload:', error);
+      this.toaster.showError('An unexpected error occurred.');
+    } finally {
+      this.spinner.stop(spine);
     }
   }
+
+
+  getUsersRoleAccess() {
+    const spine = this.spinner.start();
+    const moduleCode = 'FIFO';
+
+    this.dashboardservice.getAllUsersRoleWithModule(moduleCode).subscribe({
+      next: (response) => {
+        console.log(response?.data || "No data received");
+        this.fifoUserAccessList = response?.data ?? [];
+        if (response?.retVal === 0) {
+          this.toaster.showSuccess(response?.retMsg || "Data fetched successfully");
+        } else {
+          this.toaster.showError(response?.retMsg || "Failed to fetch data");
+        }
+
+        this.spinner.stop(spine);
+      },
+      error: (error) => {
+        console.error("Error fetching bypass user mapping:", error?.message || error);
+        this.toaster.showError("Something went wrong while fetching data");
+        this.spinner.stop(spine);
+      },
+      complete: () => {
+        this.spinner.stop(spine);
+      },
+    });
+  }
+
 
 }
