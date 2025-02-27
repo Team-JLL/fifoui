@@ -63,6 +63,7 @@ export class UserMasterComponent {
   userMappingList = []
   filteredMappingList = []
 
+
   afuConfig = {
     multiple: false,
     formatsAllowed: '.xlsx,.xls',
@@ -85,7 +86,10 @@ export class UserMasterComponent {
   };
 
   selectedFile: any;
+
+  fifoUserAccessSearch: string = '';
   fifoUserAccessList: any[] = [];
+  filteredUserAccessList : any[] = [];
   appliedFilters: any = {};
 
 
@@ -304,6 +308,7 @@ export class UserMasterComponent {
       next: (response) => {
         console.log(response?.data || "No data received");
         this.fifoUserAccessList = response?.data ?? [];
+        this.filteredUserAccessList = [...this.fifoUserAccessList];
         if (response?.retVal === 0) {
           this.toaster.showSuccess(response?.retMsg || "Data fetched successfully");
         } else {
@@ -349,10 +354,9 @@ export class UserMasterComponent {
     this.showFilter = !this.showFilter;
   }
 
-  clearFilters() {
-    if (this.advancedFilter) {
-      this.advancedFilter.resetFilters();
-    }
+  closeFilter() {
+    this.showFilter = !this.showFilter;
+    this.advancedFilter.resetFilters();
     this.getBypassUserMapping()
   }
 
@@ -411,7 +415,23 @@ export class UserMasterComponent {
 
   }
 
+  searchForText(event: any) {
+    this.fifoUserAccessSearch = event.target.value.trim().toLowerCase();
 
+    // If the search field is empty, reset the list to show all data
+    if (!this.fifoUserAccessSearch) {
+      this.filteredUserAccessList = [...this.fifoUserAccessList];
+      return;
+    }
+
+    // Perform filtering only if there's input
+    this.filteredUserAccessList = this.fifoUserAccessList.filter(user => {
+      return user.userCode.toLowerCase().includes(this.fifoUserAccessSearch) ||
+        user.UserName.toLowerCase().includes(this.fifoUserAccessSearch) ||
+        user.UserEmail.toLowerCase().includes(this.fifoUserAccessSearch) ||
+        user.RoleName.toLowerCase().includes(this.fifoUserAccessSearch);
+    });
+  }
 
 
 }

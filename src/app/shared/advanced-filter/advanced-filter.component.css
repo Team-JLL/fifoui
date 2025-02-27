@@ -1,21 +1,39 @@
 .filter-container {
-
   width: 100%;
 }
 
 .filter-form {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 5.13vw;
-  row-gap: 0.63vw;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1vw;
   width: 100%;
 }
+
 
 .full-width {
   width: 100%;
+}
+
+
+.heading-p {
+  text-align: center;
+  padding: 5px;
+  border-radius: 7px;
+  font-size: 17px;
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  font-weight: 500;
+
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.41vw;
+  font-weight: 500;
+}
+
+.card-body{
+  border: solid 1px #5e9cd352;
 }

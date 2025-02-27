@@ -222,46 +222,9 @@ export class RepositoryComponent {
     });
   }
 
-
-
   toggleSearchCriteria() {
     this.hideToggle = !this.hideToggle; // Toggle the criteria variable
     this.toggleMatIcon = this.hideToggle ? 'keyboard_double_arrow_up' : 'keyboard_double_arrow_down'
-  }
-
-
-  // searchForText(event: any) {
-  //   this.searchText = event.target.value
-  //   if(this.repositoryList.length <= 0) {
-  //     this.toaster.showWarning('Please apply search criteria to start a search/No Search Criteria Selected');
-  //   } else {
-  //     this.filteredList = this.repositoryList.filter(item => {
-  //       // const repoIdString = item.refCode.toLowerCase() + '/' + ((item.repoId + '').padStart(4, '0'))
-  //       const searchTextString = this.searchText.toString().toLowerCase();
-  //       // return repoIdString.includes(searchTextString) || item.refrnceId.toLowerCase().includes(searchTextString)
-  //       //   || item.hashTags.includes(searchTextString) || item.createdBy.includes(searchTextString)
-  //       //   || item.createdOn.includes(searchTextString) || item.child.toLowerCase().includes(searchTextString);
-  //     });
-  //   }
-  // }
-
-  fetchCompletedProjects() {
-    // this.message.loader('start', 'Fetching records for you');
-    // this.commonService.fetchCompletedProjects(this.repoForm.value).subscribe((resp => {
-    //   this.message.loader('end');
-    //   if (resp['retVal'] == 0) {
-    //     this.repositoryList = resp['data']
-    //     this.filteredList = resp['data']
-    //     this.toastr.success(this.repositoryList.length + ' record found', 'Success');
-    //   } else {
-    //     if (resp['retVal'] === -1) {
-    //       this.toastr.warning(resp['retMsg'], 'Save Failed');
-    //     } else {
-    //       this.toastr.error('Something went Wrong', 'Save Failed');
-    //     }
-    //   }
-    // }));
-
   }
 
   getDetailsForAddNewMapping(){
@@ -377,6 +340,8 @@ export class RepositoryComponent {
   clearFilteredData(){
       this.repoForm.reset();
       this.searchText = '';
+      this.getRepositoryData();
   }
+
 
 }

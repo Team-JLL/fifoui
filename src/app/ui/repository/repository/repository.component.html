@@ -15,23 +15,22 @@
   <div style="height:10px"></div>
 
   <div class="card">
-    <div class="card-body">
+    <div class="card-header heading-p">
+      Search Criteria For Completed Bypass
+      <span class="toggle-bar" (click)="toggleSearchCriteria()" style="cursor: pointer">
+      <i class="material-icons">{{ toggleMatIcon }}</i>
+    </span>
+    </div>
+    <div class="card-body" *ngIf="!hideToggle">
       <div class="repository-container">
-        <p class="heading-p">
-          Search Criteria For Completed Bypass
-          <span class="toggle-bar" (click)="toggleSearchCriteria()" style="cursor: pointer">
-            <i class="material-icons">{{toggleMatIcon}}</i>
-          </span>
-        </p>
-
         <form [formGroup]="repoForm">
-          <div class="form-wrapper" [hidden]="hideToggle">
             <div class="wrapper">
+
               <div class="inputs">
                 <label>Request Code</label>
                 <mat-form-field class="full-width" appearance="outline">
                   <mat-label>Enter Request Code</mat-label>
-                  <input matInput type="text" placeholder="Enter Request Code" formControlName="requestCode" >
+                  <input matInput type="text" placeholder="Enter Request Code" formControlName="requestCode">
                 </mat-form-field>
               </div>
 
@@ -193,21 +192,22 @@
               <button class="btn applyFilterBtn" (click)="getRepositoryData()">Apply filter</button>
               <button class="btn btn-light" (click)="clearFilteredData()">Clear filter</button>
             </div>
-          </div>
         </form>
       </div>
     </div>
   </div>
 
+  <div style="height: 5px"></div>
+
   <!-- Search and Table -->
   <div class="card">
     <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center mb-1 flex-wrap">
+      <div class="d-flex justify-content-between align-items-center mb-0 flex-wrap">
         <div class="sb-example-repository w-100">
           <div class="search d-flex align-items-center">
             <input type="text" class="form-control searchTerm flex-grow-1" placeholder="Search here..."
                    (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)">
-            <button class="btn btn-secondary btn-sm ml-1" (click)="downloadRepositoryReport()" title="Excel report" style="height: 35px">
+            <button class="btn btn-secondary btn-sm ml-1" (click)="downloadRepositoryReport()" matTooltip="Download as Excel" style="height: 35px">
               <i class="fa fa-download"></i> Repository Report
             </button>
           </div>

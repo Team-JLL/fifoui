@@ -50,7 +50,7 @@
             </button>
 
             <!-- Clear Filter Button -->
-            <button class="btn btn-sm mr-0 mt-2" matTooltip="Clear filter" (click)="clearFilters()">
+            <button class="btn btn-sm mr-0 mt-2" matTooltip="Close filter" (click)="closeFilter()">
               <img src="assets/filter_c2.png" alt="" style="height: 30px;" />
             </button>
           </div>
@@ -85,6 +85,13 @@
               <p class="form-header-3">FIFO Users</p>
               <p class="file-upload-heading-info">Manage FIFO Users here.</p>
 
+              <div class="search-container">
+                <div class="search-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" placeholder="Search here..." [value]="fifoUserAccessSearch" (input)="searchForText($event)" style="width: 100%;border: solid 0px;" />
+                </div>
+              </div>
+
               <div class="details">
                 <table class="table-wrapper">
                   <table>
@@ -95,7 +102,7 @@
                       <th>User Email</th>
                       <th>FIFO Portal Role Access</th>
                     </tr>
-                    <tr *ngFor="let user of fifoUserAccessList; let index = index">
+                    <tr *ngFor="let user of filteredUserAccessList; let index = index">
                       <td>{{index + 1}}</td>
                       <td>{{user.userCode}}
                       <td>{{user.UserName}}</td>
