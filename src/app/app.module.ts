@@ -36,6 +36,7 @@ import { MatTooltipModule} from "@angular/material/tooltip";
 import { AngularFileUploaderModule } from "angular-file-uploader";
 import { MatDialogModule } from '@angular/material/dialog';
 import { UploadErrorsComponent } from './ui/file-upload/file-upload-errors/upload-errors.component';
+import { AdvancedFilterComponent } from './shared/advanced-filter/advanced-filter.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { UploadErrorsComponent } from './ui/file-upload/file-upload-errors/uploa
     UserMasterComponent,
     AddNewUserComponent,
     UploadErrorsComponent,
+    AdvancedFilterComponent,
 
   ],
   imports: [

@@ -40,3 +40,67 @@
   color: gray;
 }
 
+.user-master-download-btn{
+  color: #ffffff;
+  background-color: #355892 !important
+}
+
+::ng-deep .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs > .mat-mdc-tab-header .mat-mdc-tab {
+  flex-grow: 0 !important;
+}
+
+
+
+
+.table-wrapper {
+  width: 100%;
+  padding: 1.15vw 0.77vw;
+  margin-top: 10px;
+  border-radius: 1.45vw;
+  background: white;
+}
+
+@media (max-width: 991.98px) {
+  .table-wrapper {
+    padding: 3.12vw 4.03vw;
+    border-radius: 2.11vw;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .table-wrapper {
+    padding: 5.38vw 6.94vw;
+    border-radius: 3.64vw;
+  }
+}
+
+.table-wrapper table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-wrapper tr {
+  width: 100%;
+}
+
+.table-wrapper th {
+  color: #2b465e;
+  background: #a4bed4;
+  text-align: left;
+  padding: 0.72vw 0.72vw 0.72vw 1.72vw;
+  font-size:  12px;
+  font-family: math;
+  height: 40px;
+  border: 1px solid white;
+}
+
+.table-wrapper td {
+  font-size: 12px;
+  vertical-align: top;
+  padding: 1vw;
+  color: #065ba9;
+  border: 1px solid rgb(183, 179, 179);
+  overflow: hidden;
+}
+
+

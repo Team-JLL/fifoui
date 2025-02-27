@@ -18,11 +18,20 @@
             </div>
           </div>
 
+          <div style="height: 10px"></div>
+
+          <app-advanced-filter
+            *ngIf="showFilter" #advancedFilter
+            [filterFields]="productFilterFields"
+            (applyFilter)="onFilterApplied($event)"
+            (resetFilter)="onFilterReset()">
+          </app-advanced-filter>
+
           <div style="height: 20px"></div>
 
           <div class="d-flex justify-content-between align-items-center flex-wrap">
 
-            <div class="sb-example-userMaster d-flex align-items-center flex-grow-1">
+            <div class="sb-example-userMaster mr-1 d-flex align-items-center flex-grow-1">
               <input type="text" class="searchTerm mt-2" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)">
             </div>
 
@@ -32,8 +41,17 @@
             <button class="btn mapping-btn btn-sm mr-1 mt-2" (click)="addNewUserMapping()" style="height: 30px;">
               <i class="fa fa-user-plus"></i>&nbsp; New Mapping
             </button>
-            <button class="btn user-master-download-btn btn-sm mr-1 mt-2" (click)="addNewUserMapping()" style="height: 30px;" title="Download Master Data">
-              <img src="assets/user_download.png" alt="" style="height: 25px;"/>&nbsp;User Master
+            <button class="btn user-master-download-btn btn-sm mr-1 mt-2" (click)="downloadUserMaster()" style="height: 30px;" matTooltip="Download Mapping as Excel">
+              <img src="assets/user_download.png" alt="" style="height: 28px;margin-top: -3px"/>&nbsp;User Master
+            </button>
+            <!-- Filter Button -->
+            <button class="btn btn-sm mr-0 mt-2" matTooltip="Filter" (click)="toggleFilter()">
+              <img src="assets/filter_2.png" alt="" style="height: 30px;" />
+            </button>
+
+            <!-- Clear Filter Button -->
+            <button class="btn btn-sm mr-0 mt-2" matTooltip="Clear filter" (click)="clearFilters()">
+              <img src="assets/filter_c2.png" alt="" style="height: 30px;" />
             </button>
           </div>
 

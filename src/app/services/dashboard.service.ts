@@ -96,8 +96,9 @@ export class DashboardService {
     return this.apiProvider.post(UrlConstants.cancelRequest, data, '');
   }
 
-  public getBypassUserMapping() : Observable<any>{
-    return this.apiProvider.get(UrlConstants.getBypassUserMapping)
+  public getBypassUserMapping(searchCriteria:any) : Observable<any>{
+    const data = {searchCriteria}
+    return this.apiProvider.post(UrlConstants.getBypassUserMapping,data, '')
   }
 
   public deleteBypassUserMapping(mappingId: any): Observable<any> {
@@ -117,6 +118,11 @@ export class DashboardService {
   public editBypassMapping(mappingId:any,requesterIds: any, channel: any, depot: any, liquidUsrIds: any,dmndPlnrUsrIds:any,requesterType:any,zsmUsr:any): Observable<any> {
     const data = {mappingId,requesterIds, channel, depot, liquidUsrIds,dmndPlnrUsrIds,requesterType,zsmUsr}
     return this.apiProvider.post(UrlConstants.editBypassMapping, data, '');
+  }
+
+  public getAllUsersRoleWithModule(moduleCode:any) : Observable<any>{
+    const data = {moduleCode}
+    return this.apiProvider.post(UrlConstants.getAllUsersRoleWithModule,data, '')
   }
 
 
@@ -146,18 +152,14 @@ export class DashboardService {
     return this.apiProvider.post(UrlConstants.downloadUserMasterTemplate, data, {responseType: 'blob'});
   }
 
-
   public uploadUserMasterData(): Observable<any> {
     const data = {}
     return this.apiProvider.post(UrlConstants.uploadUserMasterData, data, {responseType: 'blob'});
   }
 
-
-  public getAllUsersRoleWithModule(moduleCode:any) : Observable<any>{
-    const data = {moduleCode}
-    return this.apiProvider.post(UrlConstants.getAllUsersRoleWithModule,data, '')
+  public downloadUserMaster(searchCriteria:any): Observable<any> {
+    const data = {searchCriteria}
+    return this.apiProvider.post(UrlConstants.downloadUserMaster, data, {responseType: 'blob'});
   }
-
-
 
 }

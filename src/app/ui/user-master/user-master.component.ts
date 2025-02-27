@@ -11,6 +11,12 @@ import {AddNewUserComponent} from "./add-new-user/add-new-user.component";
 import {UrlConstants} from "../../utilities/UrlConstants";
 import {UploadErrorsComponent} from "../file-upload/file-upload-errors/upload-errors.component";
 import {AngularFileUploaderComponent} from "angular-file-uploader";
+import {AdvancedFilterComponent} from "../../shared/advanced-filter/advanced-filter.component";
+import {ReplaySubject, Subject, takeUntil} from "rxjs";
+import {User} from "../../model/User";
+import {FormControl, FormGroup} from "@angular/forms";
+import {Depot} from "../../model/Depot";
+import {Channel} from "../../model/Channel";
 
 @Component({
   selector: 'app-user-master',
@@ -20,8 +26,25 @@ import {AngularFileUploaderComponent} from "angular-file-uploader";
 export class UserMasterComponent {
   @ViewChild('userMappingTemplate', { static: true }) userMappingTemplate!: TemplateRef<any>;
   @Output() result: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('usrMasterBulkUpload', {static: true})
-  private usrMasterBulkUpload!: AngularFileUploaderComponent;
+  @ViewChild('usrMasterBulkUpload', {static: true}) private usrMasterBulkUpload!: AngularFileUploaderComponent;
+  @ViewChild('advancedFilter') advancedFilter!: AdvancedFilterComponent;
+
+  protected _onDestroy = new Subject<void>();
+
+  users!: User[];
+  public userFIlter: FormControl = new FormControl();
+  public filteredUsers: ReplaySubject<User[]> = new ReplaySubject<User[]>(1);
+
+  depots!: Depot[];
+  public depotFIlter: FormControl = new FormControl();
+  public filteredDepots: ReplaySubject<Depot[]> = new ReplaySubject<Depot[]>(1);
+
+  channels!: Channel[];
+  public channelFIlter: FormControl = new FormControl();
+  public filteredChannels: ReplaySubject<Channel[]> = new ReplaySubject<Channel[]>(1);
+  filterForm!: FormGroup ;
+  searchFilter = new FormControl('');
+
 
   search = '';
   gridApi !: GridApi;
@@ -33,6 +56,12 @@ export class UserMasterComponent {
   rowData?: any
   datafifo: any = []
   errData: { errMsg: string; errSuggestion: string }[] = [];
+  showFilter: boolean = false;
+  selectedUserIds: number[] = [];
+
+  productFilterFields: any[] = [];
+  userMappingList = []
+  filteredMappingList = []
 
   afuConfig = {
     multiple: false,
@@ -57,6 +86,7 @@ export class UserMasterComponent {
 
   selectedFile: any;
   fifoUserAccessList: any[] = [];
+  appliedFilters: any = {};
 
 
   public defaultColDef: ColDef = {
@@ -102,6 +132,7 @@ export class UserMasterComponent {
 
   ngOnInit() {
     this.getBypassUserMapping()
+    this.getDetailsForAddNewMapping()
     this.getUsersRoleAccess()
   }
 
@@ -143,27 +174,35 @@ export class UserMasterComponent {
     }
   }
 
-  getBypassUserMapping() {
+  onFilterApplied(filters: any) {
+    this.getBypassUserMapping(filters);
+    this.appliedFilters = filters;
+  }
+
+  getBypassUserMapping(filters?: any) {
     const spine = this.spinner.start();
     const spinnerTimeout = setTimeout(() => {
       this.spinner.stop(spine);
-    }, 4000); //4 seconds timeout
+    }, 4000); // 4 seconds timeout
 
-    this.dashboardservice.getBypassUserMapping().subscribe({
+    this.dashboardservice.getBypassUserMapping(filters || {}).subscribe({
       next: (response) => {
         this.rowData = response.data;
         this.spinner.stop(spine);
         clearTimeout(spinnerTimeout);
-      },
-      error: (error) => {
-        console.error("Error fetching bypass user mapping", error);
-        this.spinner.stop(spine);
-        clearTimeout(spinnerTimeout);
-      },
-      complete: () => {
-        clearTimeout(spinnerTimeout);
+        if (response['retVal'] == 0) {
+          this.userMappingList = response['data']
+          this.filteredMappingList = response['data']
+          this.toaster.showSuccess(this.userMappingList.length + ' record found');
+        } else {
+          if (response['retVal'] === -1) {
+            this.toaster.showWarning(response['retMsg']);
+          } else {
+            this.toaster.showError('Something went Wrong',);
+          }
+        }
       }
-    });
+    })
   }
 
 
@@ -283,6 +322,96 @@ export class UserMasterComponent {
       },
     });
   }
+
+
+  getDetailsForAddNewMapping(){
+
+    this.dashboardservice.getDetailsForAddNewMapping().subscribe(response => {
+
+      this.users = response['userList'];
+      this.filteredUsers.next(this.users.slice());
+
+      this.depots = response['depotList'];
+      this.filteredDepots.next(this.depots.slice());
+
+      this.channels = response['channelList'];
+      this.filteredChannels.next(this.channels.slice());
+
+      this.initializeFieldsForFilter(this.users,this.depots,this.channels);
+
+
+    });
+
+  }
+
+
+  toggleFilter() {
+    this.showFilter = !this.showFilter;
+  }
+
+  clearFilters() {
+    if (this.advancedFilter) {
+      this.advancedFilter.resetFilters();
+    }
+    this.getBypassUserMapping()
+  }
+
+  onFilterReset() {
+    console.log('Filters Reset');
+  }
+
+
+  initializeFieldsForFilter(users:any,depots:any,channels:any) {
+
+    this.productFilterFields = [
+      { key: 'requester', label: 'Requester', type: 'dropdown', options: (users || []).map((usr: any) => ({
+          label: usr.usrName, value: usr.usrId}))
+      },
+
+      { key: 'channel', label: 'Channel', type: 'dropdown',options: (channels || []).map((ch: any) => ({
+          label: ch.channelName, value: ch.channelId}))
+      },
+
+      { key: 'depot', label: 'Depot', type: 'dropdown', options: (depots || []).map((dp: any) => ({
+          label: dp.depotName, value: dp.depotId}))
+      },
+
+      { key: 'liquidationUser', label: 'Liquidation User', type: 'dropdown', options: (users || []).map((usr: any) => ({
+          label: usr.usrName, value: usr.usrId}))
+      },
+
+      { key: 'zsmUser', label: 'ZSM User', type: 'dropdown', options: (users || []).map((usr: any) => ({
+          label: usr.usrName, value: usr.usrId}))
+      },
+
+     //{ key: 'availableFrom', label: 'Available From', type: 'date' }
+    ];
+  }
+
+  downloadUserMaster(){
+    const spine = this.spinner.start();
+    let fileName = 'FIFO_User_Master.xlsx';
+
+    this.dashboardservice.downloadUserMaster(this.appliedFilters).subscribe(response => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+
+      this.spinner.stop(spine);
+    }, error => {
+      console.error('Error downloading report:', error);
+      this.spinner.stop(spine);
+    });
+
+  }
+
+
 
 
 }
