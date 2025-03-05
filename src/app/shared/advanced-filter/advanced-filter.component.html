@@ -19,7 +19,7 @@
               <label>{{ field.label }}</label>
               <mat-form-field *ngIf="field.type === 'dropdown'" class="full-width" appearance="fill">
                 <mat-label>Select {{ field.label }}</mat-label>
-                <mat-select [formControlName]="field.key">
+                <mat-select [formControlName]="field.key" multiple="{{field.multiple}}">
                   <mat-option>
                     <ngx-mat-select-search [formControl]="searchFilter"
                                            [noEntriesFoundLabel]="'Nothing to display'"
@@ -28,7 +28,7 @@
                     </ngx-mat-select-search>
                   </mat-option>
                   <mat-option [value]="0">None</mat-option>
-                  <mat-option *ngFor="let option of field.options" [value]="option.value">
+                  <mat-option *ngFor="let option of filteredOptions[field.key]" [value]="option.value">
                     {{ option.label }}
                   </mat-option>
                 </mat-select>

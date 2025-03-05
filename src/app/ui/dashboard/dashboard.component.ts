@@ -72,7 +72,8 @@ export class DashboardComponent{
       }
     },
     {field: 'workstage', headerName: 'WorkStage', filter: true, width: 150},
-    {field: 'pendingWith', headerName: 'Pending with', filter: true, width: 400,},
+    {field: 'pendingWith', headerName: 'Pending with', filter: true, width: 400,
+      tooltipValueGetter: (params) => params.value},
     {field: 'fifoReportId', headerName: 'FIFO Id', width: 100,},
     {field: 'validFrom', headerName: 'Valid From', width: 150, },
     {field: 'validTo', headerName: 'Valid To', width: 150, },

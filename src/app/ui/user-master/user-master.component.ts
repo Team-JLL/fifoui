@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild} from "@angular/core";
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {DashboardService} from "../../services/dashboard.service";
 import {SnackBarService} from "../../services/snack-bar.service";
@@ -63,6 +63,7 @@ export class UserMasterComponent {
   userMappingList = []
   filteredMappingList = []
 
+  dialogRef!: MatDialogRef<any>;
 
   afuConfig = {
     multiple: false,
@@ -187,7 +188,7 @@ export class UserMasterComponent {
     const spine = this.spinner.start();
     const spinnerTimeout = setTimeout(() => {
       this.spinner.stop(spine);
-    }, 4000); // 4 seconds timeout
+    }, 6000); // 6 seconds timeout
 
     this.dashboardservice.getBypassUserMapping(filters || {}).subscribe({
       next: (response) => {
@@ -225,7 +226,7 @@ export class UserMasterComponent {
 
 
   openTemplateDownloadWarning() {
-    this.dialog.open(this.userMappingTemplate, {width: '50vw', height: '24vw'});
+    this.dialogRef = this.dialog.open(this.userMappingTemplate, {width: '50vw', height: '24vw'});
   }
 
   downloadUserMappingTemplate() {
@@ -281,6 +282,10 @@ export class UserMasterComponent {
 
         case 1:
           this.toaster.showSuccess('Successfully Uploaded!');
+          if (this.dialogRef) {
+            this.dialogRef.close(); // Closes only the opened template dialog
+          }
+          this.getBypassUserMapping();
           break;
 
         case -777:
@@ -362,30 +367,31 @@ export class UserMasterComponent {
 
   onFilterReset() {
     console.log('Filters Reset');
+    this.getBypassUserMapping();
   }
 
 
   initializeFieldsForFilter(users:any,depots:any,channels:any) {
 
     this.productFilterFields = [
-      { key: 'requester', label: 'Requester', type: 'dropdown', options: (users || []).map((usr: any) => ({
-          label: usr.usrName, value: usr.usrId}))
+      { key: 'requester', label: 'Requester', type: 'dropdown', multiple: true,
+        options: (users || []).map((usr: any) => ({ label: usr.usrName, value: usr.usrId}))
       },
 
-      { key: 'channel', label: 'Channel', type: 'dropdown',options: (channels || []).map((ch: any) => ({
-          label: ch.channelName, value: ch.channelId}))
+      { key: 'channel', label: 'Channel', type: 'dropdown', multiple: true,
+        options: (channels || []).map((ch: any) => ({ label: ch.channelName, value: ch.channelId}))
       },
 
-      { key: 'depot', label: 'Depot', type: 'dropdown', options: (depots || []).map((dp: any) => ({
-          label: dp.depotName, value: dp.depotId}))
+      { key: 'depot', label: 'Depot', type: 'dropdown', multiple: true,
+        options: (depots || []).map((dp: any) => ({ label: dp.depotName, value: dp.depotId}))
       },
 
-      { key: 'liquidationUser', label: 'Liquidation User', type: 'dropdown', options: (users || []).map((usr: any) => ({
-          label: usr.usrName, value: usr.usrId}))
+      { key: 'liquidationUser', label: 'Liquidation User', type: 'dropdown', multiple: false,
+        options: (users || []).map((usr: any) => ({ label: usr.usrName, value: usr.usrId}))
       },
 
-      { key: 'zsmUser', label: 'ZSM User', type: 'dropdown', options: (users || []).map((usr: any) => ({
-          label: usr.usrName, value: usr.usrId}))
+      { key: 'zsmUser', label: 'ZSM User', type: 'dropdown', multiple: false,
+        options: (users || []).map((usr: any) => ({ label: usr.usrName, value: usr.usrId}))
       },
 
      //{ key: 'availableFrom', label: 'Available From', type: 'date' }

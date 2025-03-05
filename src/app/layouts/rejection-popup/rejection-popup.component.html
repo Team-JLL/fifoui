@@ -16,7 +16,7 @@
       <p class="pHeader">{{message}}</p>
     </div>
     <div class="d-flex">
-    <textarea name="" cols="30" rows="10"  style="width: 99%;height: 70px;" placeholder="Enter remarks..." [(ngModel)]="remarks">
+    <textarea name="" (input)="validateRemarks($event)" cols="30" rows="10"  style="width: 99%;height: 70px;" placeholder="Enter remarks..." [(ngModel)]="remarks">
     </textarea>
     </div>
     <div class="d-flex justify-content-end p-1" style="margin-right: -25px;">

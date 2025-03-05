@@ -37,3 +37,12 @@
 .card-body{
   border: solid 1px #5e9cd352;
 }
+
+.dlticon{
+  font-size: 16px;
+}
+
+::ng-deep.mat-mdc-icon-button.mat-mdc-button-base{
+  padding: 0;
+  height: 32px;
+}

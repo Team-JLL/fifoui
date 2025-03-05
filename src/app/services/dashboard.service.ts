@@ -72,6 +72,7 @@ export class DashboardService {
   }
 
   public getRepositoryData(searchCriteria:any): Observable<any> {
+    console.log(searchCriteria)
     const data = {searchCriteria}
     return this.apiProvider.post(UrlConstants.getRepositoryData,data,'');
   }

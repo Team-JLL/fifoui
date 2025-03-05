@@ -30,4 +30,11 @@ export class ApproveBarComponent implements OnInit {
       this.toaster.showError('Please enter remark!')
     }
   }
+
+  validateRemarks(event: any) {
+    const regex = /^[A-Za-z0-9\-&(),.% ]*$/;
+    if (!regex.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^A-Za-z0-9\-&(),.% ]/g, '');
+    }
+  }
 }

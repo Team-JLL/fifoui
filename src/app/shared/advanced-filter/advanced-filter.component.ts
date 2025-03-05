@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
 @Component({
@@ -13,6 +13,7 @@ export class AdvancedFilterComponent {
 
   filterForm!: FormGroup ;
   searchFilter = new FormControl('');
+  filteredOptions: { [key: string]: any[] } = {};
 
   constructor(private fb: FormBuilder) {
     this.filterForm = this.fb.group({})
@@ -21,6 +22,14 @@ export class AdvancedFilterComponent {
 
   ngOnInit() {
     this.createForm();
+    this.setupSearchFilters();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['filterFields'] && changes['filterFields'].currentValue) {
+      this.createForm(); // Recreate the form whenever filterFields changes
+      this.setupSearchFilters()
+    }
   }
 
   createForm() {
@@ -29,6 +38,20 @@ export class AdvancedFilterComponent {
       formControls[field.key] = [""];
     });
     this.filterForm = this.fb.group(formControls);
+  }
+
+  setupSearchFilters() {
+    this.filterFields.forEach(field => {
+      if (field.type === 'dropdown') {
+        this.filteredOptions[field.key] = field.options;
+
+        this.searchFilter.valueChanges.subscribe(searchText => {
+          this.filteredOptions[field.key] = field.options.filter((option: { label: string; value: any }) =>
+            option.label.toLowerCase().includes(searchText?.toLowerCase() || '')
+          );
+        });
+      }
+    });
   }
 
   applyFilters() {

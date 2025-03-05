@@ -80,7 +80,8 @@ export class LiquidationComponent {
       }
     },
     {field: 'workstage', headerName: 'WorkStage', filter: true, width: 200},
-    {field: 'pendingWith', headerName: 'Pending with', filter: true, width: 300},
+    {field: 'pendingWith', headerName: 'Pending with', filter: true, width: 300,
+      tooltipValueGetter: (params) => params.value},
     {field: 'fifoReportId', headerName: 'FIFO Id', width: 100,},
     {field: 'validFrom', headerName: 'Valid From', width: 150, },
     {field: 'validTo', headerName: 'Valid To', width: 150, },

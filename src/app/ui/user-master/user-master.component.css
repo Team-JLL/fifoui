@@ -10,6 +10,7 @@
   color: #005193;
   letter-spacing: 2px;
   text-transform: uppercase;
+  margin-bottom: 15px;
 }
 
 .form-header-3::first-letter{
@@ -48,9 +49,6 @@
 ::ng-deep .mat-mdc-tab-group.mat-mdc-tab-group-stretch-tabs > .mat-mdc-tab-header .mat-mdc-tab {
   flex-grow: 0 !important;
 }
-
-
-
 
 .table-wrapper {
   width: 100%;
@@ -131,3 +129,17 @@
   margin-right: 10px;
 }
 
+.filter{
+  border: 1px solid grey;
+}
+
+::ng-deep.text-primary{
+  font-size: 12px !important;
+}
+
+::ng-deep strong{
+  font-size: 10px !important;
+}
+p{
+  margin: 0;
+}

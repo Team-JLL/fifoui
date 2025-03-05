@@ -16,7 +16,8 @@
     <p class="pHeader" >Are you sure to approve the request(s)?</p>
   </div>
   <div class="d-flex">
-    <textarea name="" cols="30" rows="10"  style="width: 99%;height: 70px;" placeholder="Enter remarks..." [(ngModel)]="remarks">
+    <textarea name="" cols="30" rows="10"  style="width: 99%;height: 70px;" placeholder="Enter remarks..." [(ngModel)]="remarks"
+              (input)="validateRemarks($event)">
     </textarea>
   </div>
   <div class="d-flex justify-content-end" style="margin-right: -11px;">

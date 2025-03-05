@@ -74,7 +74,8 @@ export class FinalBypassComponent {
       }
     },
     {field: 'workstage', headerName: 'WorkStage', filter: true, width: 200},
-    {field: 'pendingWith', headerName: 'Pending with', filter: true, width: 350,},//wrapText: true, autoHeight: true,
+    {field: 'pendingWith', headerName: 'Pending with', filter: true, width: 350,
+      tooltipValueGetter: (params) => params.value},//wrapText: true, autoHeight: true,
     {field: 'liquidationDate', headerName: 'Liquidation Date', filter: true, width: 150,},
     {field: 'liqdtnRemark', headerName: 'Liquidation Remark', filter: true, width: 300,},
     {field: 'fifoReportId', headerName: 'FIFO Id', width: 100,hide:true},

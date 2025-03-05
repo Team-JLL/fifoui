@@ -114,7 +114,7 @@
                 <label>Depot</label>
                 <mat-form-field class="full-width" appearance="outline">
                   <mat-label>Select depot</mat-label>
-                  <mat-select formControlName="depot">
+                  <mat-select formControlName="depot" multiple>
                     <mat-option>
                       <ngx-mat-select-search [formControl]="depotFIlter"
                                              [noEntriesFoundLabel]="'Nothing to display'"
@@ -134,7 +134,7 @@
                 <label>Channel</label>
                 <mat-form-field class="full-width" appearance="outline" >
                   <mat-label>Select channel</mat-label>
-                  <mat-select formControlName="channel">
+                  <mat-select formControlName="channel" multiple>
                     <mat-option>
                       <ngx-mat-select-search [formControl]="channelFIlter"
                                              [noEntriesFoundLabel]="'Nothing to display'"
@@ -154,7 +154,7 @@
                 <label>Main Item</label>
                 <mat-form-field class="full-width" appearance="outline" >
                   <mat-label>Select Item</mat-label>
-                  <mat-select  formControlName="mainItem">
+                  <mat-select  formControlName="mainItem" multiple>
                     <mat-option>
                       <ngx-mat-select-search [formControl]="itemFilter"
                                              [noEntriesFoundLabel]="'Nothing to display'"
@@ -174,7 +174,7 @@
                 <label>Obstacle Item</label>
                 <mat-form-field class="full-width" appearance="outline" >
                   <mat-label>Select Item</mat-label>
-                  <mat-select formControlName="obstacleItem" >
+                  <mat-select formControlName="obstacleItem" multiple>
                     <mat-option>
                       <ngx-mat-select-search [formControl]="itemFilter"
                                              [noEntriesFoundLabel]="'Nothing to display'"

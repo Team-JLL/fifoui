@@ -119,7 +119,7 @@ export class RepositoryComponent {
     {field: 'gen1StoreStock', headerName: 'General1 Store',width: 170,cellStyle: {textAlign: 'right'}},
     {field: 'slobStoreStock', headerName: 'SLOB Store',width: 170,cellStyle: {textAlign: 'right'}},
     {field: 'creationUser', headerName: 'Requested By', filter: true, width: 200,},
-
+    {field: 'requestDate', headerName: 'Creation Date', filter: true, width: 200,},
   ];
 
   constructor(private dialog: MatDialog, private router: Router, private dashboardservice: DashboardService,
@@ -151,6 +151,7 @@ export class RepositoryComponent {
 
     const spine = this.spinner.start();
 
+    console.log(this.repoForm.value)
     this.dashboardservice.getRepositoryData(this.repoForm.value).subscribe(response => {
       this.rowData = response.data;
       this.spinner.stop(spine);
@@ -330,6 +331,19 @@ export class RepositoryComponent {
   onDateUp(event: KeyboardEvent) {
     const allowedCharacters = /^[0-9-]+$/;
     const inputChar = event.key;
+
+    console.log(inputChar)
+    // Allow essential control keys
+    if (
+      inputChar === 'Backspace' ||
+      inputChar === 'Delete' ||
+      inputChar === 'ArrowLeft' ||
+      inputChar === 'ArrowRight' ||
+      inputChar === 'Home' ||
+      inputChar === 'End'
+    ) {
+      return; // Allow these keys without blocking
+    }
 
     if (!allowedCharacters.test(inputChar)) {
       event.preventDefault();
