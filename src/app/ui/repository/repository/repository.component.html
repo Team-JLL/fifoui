@@ -15,7 +15,7 @@
   <div style="height:10px"></div>
 
   <div class="card">
-    <div class="card-header heading-p">
+    <div class="card-header heading-p" (click)="toggleSearchCriteria()" style="cursor: pointer">
       Search Criteria For Completed Bypass
       <span class="toggle-bar" (click)="toggleSearchCriteria()" style="cursor: pointer">
       <i class="material-icons">{{ toggleMatIcon }}</i>
