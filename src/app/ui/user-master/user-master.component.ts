@@ -349,24 +349,19 @@ export class UserMasterComponent {
 
       this.initializeFieldsForFilter(this.users,this.depots,this.channels);
 
-
     });
 
   }
 
-
-  toggleFilter() {
-    this.showFilter = !this.showFilter;
+  applyFilter() {
+    this.showFilter = true;
   }
 
-  closeFilter() {
-    this.showFilter = !this.showFilter;
-    this.advancedFilter.resetFilters();
-    this.getBypassUserMapping()
-  }
-
-  onFilterReset() {
-    console.log('Filters Reset');
+  removeFilter() {
+    this.showFilter = false;
+    if (this.advancedFilter) {
+      this.advancedFilter.resetFilters();
+    }
     this.getBypassUserMapping();
   }
 

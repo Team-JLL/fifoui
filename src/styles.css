@@ -271,7 +271,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", serif; }
 
 .mat-mdc-tab-body-content {
   height: 100%;
-  overflow: hidden;
+  overflow: hidden!important;
 }
 
 .applyFilterBtn {

@@ -23,8 +23,7 @@
           <app-advanced-filter
             *ngIf="showFilter" #advancedFilter
             [filterFields]="productFilterFields"
-            (applyFilter)="onFilterApplied($event)"
-            (resetFilter)="onFilterReset()">
+            (applyFilter)="onFilterApplied($event)">
           </app-advanced-filter>
 
           <div style="height: 20px"></div>
@@ -45,12 +44,12 @@
               <img src="assets/user_download.png" alt="" style="height: 28px;margin-top: -3px"/>&nbsp;User Master
             </button>
             <!-- Filter Button -->
-            <button class="btn btn-sm mr-1 mt-2 filter" matTooltip="Filter" (click)="toggleFilter()">
+            <button class="btn btn-sm mr-1 mt-2 filter" matTooltip="Apply Filter" (click)="applyFilter()">
               <img src="assets/filter_2.png" alt="" style="height: 20px;" />
             </button>
 
             <!-- Clear Filter Button -->
-            <button class="btn btn-sm mr-0 mt-2 filter" matTooltip="Close filter" (click)="closeFilter()">
+            <button class="btn btn-sm mr-0 mt-2 filter" matTooltip="Remove filter" (click)="removeFilter()">
               <img src="assets/filter_c2.png" alt="" style="height: 20px;" />
             </button>
           </div>
@@ -59,7 +58,7 @@
 
           <div class="d-flex justify-content-center p-0">
             <ag-grid-angular
-              style="width: 100%; height: 500px;text-align: center"
+              style="width: 100%; height: 510px;text-align: center"
               class="ag-theme-balham"
               [rowHeight]="26"
               [paginationAutoPageSize]="true"
