@@ -136,7 +136,7 @@
        <mat-form-field class="full-width" appearance="outline">
          <mat-label>ZSM User</mat-label>
          <mat-select
-           required multiple
+           required
            [(value)]="zsmUsr" (selectionChange)="onSelectionChange($event.value)" >
            <mat-option>
              <ngx-mat-select-search [formControl]="userFIlter"

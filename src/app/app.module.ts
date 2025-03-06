@@ -37,6 +37,7 @@ import { AngularFileUploaderModule } from "angular-file-uploader";
 import { MatDialogModule } from '@angular/material/dialog';
 import { UploadErrorsComponent } from './ui/file-upload/file-upload-errors/upload-errors.component';
 import { AdvancedFilterComponent } from './shared/advanced-filter/advanced-filter.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { AdvancedFilterComponent } from './shared/advanced-filter/advanced-filte
     MatTabsModule,
     MatTooltipModule,
     AngularFileUploaderModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressBarModule,
   ],
   providers: [
     CookieService,

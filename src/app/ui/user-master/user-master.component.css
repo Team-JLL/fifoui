@@ -143,3 +143,9 @@
 p{
   margin: 0;
 }
+
+
+mat-progress-bar {
+  height: 6px;
+  display: block;
+}

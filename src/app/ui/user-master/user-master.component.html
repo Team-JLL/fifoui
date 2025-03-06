@@ -34,14 +34,14 @@
               <input type="text" class="searchTerm mt-2" placeholder="Search here..." (keypress)="omit_special_char($event)" [(ngModel)]="search" (input)="globalSearch(search)">
             </div>
 
-            <button class="btn upload-btn btn-sm mr-1 mt-2" (click)="openTemplateDownloadWarning()" style="height: 30px;">
+            <button class="btn upload-btn btn-sm mr-1 mt-2" (click)="openTemplateDownloadWarning()" style="height: 30px;" matTooltip="Upload Requester Mapping">
               <i class="fa fa-cloud-upload"></i>&nbsp; Upload Mapping
             </button>
-            <button class="btn mapping-btn btn-sm mr-1 mt-2" (click)="addNewUserMapping()" style="height: 30px;">
+            <button class="btn mapping-btn btn-sm mr-1 mt-2" (click)="addNewUserMapping()" style="height: 30px;" matTooltip="Add Requester Mapping">
               <i class="fa fa-user-plus"></i>&nbsp; New Mapping
             </button>
-            <button class="btn user-master-download-btn btn-sm mr-1 mt-2" (click)="downloadUserMaster()" style="height: 30px;" matTooltip="Download Mapping as Excel">
-              <img src="assets/user_download.png" alt="" style="height: 28px;margin-top: -3px"/>&nbsp;User Master
+            <button class="btn user-master-download-btn btn-sm mr-1 mt-2" (click)="downloadUserMaster()" style="height: 30px;" matTooltip="Download Requester Mapping">
+              <img src="assets/user_download.png" alt="" style="height: 28px;margin-top: -3px"/>&nbsp;Download
             </button>
             <!-- Filter Button -->
             <button class="btn btn-sm mr-1 mt-2 filter" matTooltip="Apply Filter" (click)="applyFilter()">
@@ -147,7 +147,7 @@
               <p class="file-upload-heading">Download Template</p>
 
               <button type="button" class="btn upload-btn btn-sm mt-1" (click)="downloadUserMappingTemplate()" style="margin-left: 20px">
-                <i class="fa fa-cloud-download"> &nbsp; Download Template</i>
+                <i class="fa fa-cloud-download"></i> Download Template
               </button>
               <ul style="font-size: 13px; font-style: italic; margin-top: 8px;">
                 <li>Download the template file if it is not already available</li>
@@ -167,6 +167,14 @@
               </angular-file-uploader>
               <br>
             </div>
+
+<!--            <div *ngIf="isUploading" style="margin-top: 10px;">-->
+<!--              <mat-progress-bar-->
+<!--                mode="indeterminate"-->
+<!--                color="primary">-->
+<!--              </mat-progress-bar>-->
+<!--              <p>Uploading... Please wait</p>-->
+<!--            </div>-->
           </div>
         </div>
       </div>

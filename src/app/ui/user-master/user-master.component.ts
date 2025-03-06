@@ -93,6 +93,8 @@ export class UserMasterComponent {
   filteredUserAccessList : any[] = [];
   appliedFilters: any = {};
 
+  isUploading =  false;
+  fileSpinner : any
 
   public defaultColDef: ColDef = {
     filter: true,
@@ -245,10 +247,19 @@ export class UserMasterComponent {
     }));
   }
 
+  onUploadStart() {
+    this.isUploading = true;
+    this.fileSpinner = this.spinner.start();
+    console.log('Upload started...');
+  }
 
   afterUpload(event: any) {
-    const spine = this.spinner.start();
 
+    // this.isUploading = false;
+    // this.spinner.stop(this.fileSpinner); //
+    // console.log('Upload complete:', event);
+
+    const spine = this.spinner.start();
     try {
       if (!event.body) {
         this.toaster.showError('No response data received.');
@@ -395,7 +406,7 @@ export class UserMasterComponent {
 
   downloadUserMaster(){
     const spine = this.spinner.start();
-    let fileName = 'FIFO_User_Master.xlsx';
+    let fileName = 'FIFO-Requesters-Mapping.xlsx';
 
     this.dashboardservice.downloadUserMaster(this.appliedFilters).subscribe(response => {
       const url = window.URL.createObjectURL(response);
