@@ -160,21 +160,31 @@
             <div class="col-md-6">
               <p class="file-upload-heading">Upload</p>
               <div style="height: 15px"></div>
-              <angular-file-uploader
-                #usrMasterBulkUpload
-                (ApiResponse)="afterUpload($event)"
-                [config]="afuConfig">
-              </angular-file-uploader>
-              <br>
-            </div>
 
-<!--            <div *ngIf="isUploading" style="margin-top: 10px;">-->
-<!--              <mat-progress-bar-->
-<!--                mode="indeterminate"-->
-<!--                color="primary">-->
-<!--              </mat-progress-bar>-->
-<!--              <p>Uploading... Please wait</p>-->
-<!--            </div>-->
+              <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+              <div class="container ng-star-inserted" id="default" style="">
+                <label for="fileInput" class="btn btn-primary btn-sm afu-select-btn ng-star-inserted">
+                  Select Document to upload
+                </label>
+
+                <!-- Hidden file input -->
+                <input id="fileInput" name="files[]" title="Select file" type="file" accept=".xlsx,.xls"
+                       class="ng-star-inserted" style="display: none;" (change)="onFileSelected($event)">
+                <br class="ng-star-inserted">
+                <p _ngcontent-ulr-c29="" class="constraints-info afu-constraints-info">(.xlsx,.xls) Size Limit: 100.00 MB</p>
+
+                <!-- File info display -->
+                <div *ngIf="file">
+                  <p class="file-info"><strong>File Name:</strong> {{ file.name }}</p>
+                  <p class="file-info"><strong>File Size:</strong> {{ (file.size / 1024).toFixed(2) }} KB</p>
+                </div>
+                <br>
+                <button  class="btn btn-success afu-upload-btn" type="button" [disabled]="!fileSelected"
+                         (click)="uploadFile()">Upload
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

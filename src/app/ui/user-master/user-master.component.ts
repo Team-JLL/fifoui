@@ -82,7 +82,7 @@ export class UserMasterComponent {
       sizeLimit: 'Size Limit'
     },
     uploadAPI: {
-      url: UrlConstants.uploadUserMasterData,
+      url: '',
     }
   };
 
@@ -93,8 +93,9 @@ export class UserMasterComponent {
   filteredUserAccessList : any[] = [];
   appliedFilters: any = {};
 
-  isUploading =  false;
-  fileSpinner : any
+  fileSelected = false;
+  file: File | null = null;
+  isLoading = false;
 
   public defaultColDef: ColDef = {
     filter: true,
@@ -104,27 +105,32 @@ export class UserMasterComponent {
 
   public columnDefs: ColDef[] = [
     {field: 'index', headerName: 'No', width: 100, valueGetter: (node: any) => String(node.node.rowIndex + 1)},
-    {field: 'mappingId', headerName: 'mappingId', width: 10 , hide:true},
-    {field: 'rqstrId', headerName: 'rqstrId', width: 10 , hide:true},
+    {field: 'mappingId', headerName: 'mappingId', width: 10, hide: true},
+    {field: 'rqstrId', headerName: 'rqstrId', width: 10, hide: true},
     {field: 'rqstrName', headerName: 'Bypass Requester', width: 150},
+    {field: 'requesterCode', headerName: 'Requester Code', width: 150},
     {field: 'rqstrType', headerName: 'Requester Type', width: 130},
-    {field: 'channelId', headerName: 'channelId', width: 10 , hide:true},
-    {field: 'channelName', headerName:'Channel', width: 100},
-    {field: 'depotId', headerName: 'depotId', width: 10 , hide:true},
+    {field: 'channelId', headerName: 'channelId', width: 10, hide: true},
+    {field: 'channelName', headerName: 'Channel', width: 100},
+    {field: 'depotId', headerName: 'depotId', width: 10, hide: true},
     {field: 'depotCd', headerName: 'Depot Code', width: 120},
     {field: 'depotName', headerName: 'Depot Name', width: 300},
-    {field: 'liqdtnUsrId', headerName: 'liqdtnUsrId', width: 10 , hide:true},
+    {field: 'liqdtnUsrId', headerName: 'liqdtnUsrId', width: 10, hide: true},
     {field: 'liqdtnUsrName', headerName: 'Liquidation User', width: 250},
-    {field: 'demandPlnrId', headerName: 'demandPlnrId', width: 10 , hide:true},
+    {field: 'liquidtUsrCode', headerName: 'Liquidation User Code', width: 250},
+    {field: 'demandPlnrId', headerName: 'demandPlnrId', width: 10, hide: true},
     {field: 'demandPlnrName', headerName: 'Demand Planner', width: 250},
-    {field: 'zsm_user', headerName: 'zsm_user', width: 10, hide:true},
-    {field: 'zsm_mails', headerName: 'ZSM', width: 250},
-    {field: 'edit', headerName: 'Edit',width: 80,
+    {field: 'zsm_user', headerName: 'zsm_user', width: 10, hide: true},
+    {field: 'zsmUsrCode', headerName: 'ZSM User Code', width: 250},
+    {field: 'zsm_mails', headerName: 'ZSM Email', width: 250},
+    {
+      field: 'edit', headerName: 'Edit', width: 80,
       cellRenderer: function () {
         return '<img src="assets/pencil.png" alt="" aria-hidden="true" width="12px" height="12px" style="margin-left: 25%;cursor: pointer;" />';
       }
     },
-    {field: 'delete', headerName: 'Delete',width: 80,
+    {
+      field: 'delete', headerName: 'Delete', width: 80,
       cellRenderer: function () {
         return '<img src="assets/delete.png" alt="" aria-hidden="true" width="12px" height="12px" style="margin-left: 25%;cursor: pointer;" />';
       }
@@ -247,82 +253,13 @@ export class UserMasterComponent {
     }));
   }
 
-  onUploadStart() {
-    this.isUploading = true;
-    this.fileSpinner = this.spinner.start();
-    console.log('Upload started...');
-  }
-
-  afterUpload(event: any) {
-
-    // this.isUploading = false;
-    // this.spinner.stop(this.fileSpinner); //
-    // console.log('Upload complete:', event);
-
-    const spine = this.spinner.start();
-    try {
-      if (!event.body) {
-        this.toaster.showError('No response data received.');
-        return;
-      }
-
-      const retVal = event.body.retVal;
-
-      switch (retVal) {
-        case -1:
-          this.dialog.open(UploadErrorsComponent, {
-            width: '800px',
-            height: '500px',
-            data: { errorData: event.body?.Errordata }
-          });
-          this.toaster.showError('Upload Failed!');
-          break;
-
-        case -888:
-          this.dialog.open(UploadErrorsComponent, {
-            width: '800px',
-            height: '500px',
-            data: { errorData: event.body?.Errordata }
-          });
-          this.toaster.showError('Upload Failed! Mapping already exists');
-          break;
-
-        case -2:
-          this.toaster.showError('Please choose a valid file');
-          break;
-
-        case 1:
-          this.toaster.showSuccess('Successfully Uploaded!');
-          if (this.dialogRef) {
-            this.dialogRef.close(); // Closes only the opened template dialog
-          }
-          this.getBypassUserMapping();
-          break;
-
-        case -777:
-          this.toaster.showError('Failed to save new mapping.');
-          break;
-
-        default:
-          this.toaster.showError('Please upload a valid file.');
-          break;
-      }
-    } catch (error) {
-      console.error('Error handling upload:', error);
-      this.toaster.showError('An unexpected error occurred.');
-    } finally {
-      this.spinner.stop(spine);
-    }
-  }
-
-
   getUsersRoleAccess() {
     const spine = this.spinner.start();
     const moduleCode = 'FIFO';
 
     this.dashboardservice.getAllUsersRoleWithModule(moduleCode).subscribe({
       next: (response) => {
-        console.log(response?.data || "No data received");
+        //console.log(response?.data || "No data received");
         this.fifoUserAccessList = response?.data ?? [];
         this.filteredUserAccessList = [...this.fifoUserAccessList];
         if (response?.retVal === 0) {
@@ -443,6 +380,84 @@ export class UserMasterComponent {
         user.UserEmail.toLowerCase().includes(this.fifoUserAccessSearch) ||
         user.RoleName.toLowerCase().includes(this.fifoUserAccessSearch);
     });
+  }
+
+
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.file = event.target.files[0];
+      this.fileSelected = true;
+    } else {
+      this.fileSelected = false;
+    }
+  }
+
+
+  uploadFile() {
+    if (this.file) {
+      const formData = new FormData();
+      formData.append('file', this.file);
+
+      this.isLoading = true;
+      this.dashboardservice.uploadUserMasterData(formData).subscribe({
+        next: (resp: any) => {
+          this.isLoading = false;
+          const retVal = resp.retVal;
+
+          //console.log("--" + JSON.stringify(resp))
+
+          switch (retVal) {
+            case 0:
+              this.toaster.showSuccess('Successfully Uploaded!');
+              if (this.dialogRef) {
+                this.dialogRef.close();
+              }
+              this.getBypassUserMapping();
+              break;
+
+            case -1:
+              this.dialog.open(UploadErrorsComponent, {
+                width: '800px',
+                height: '500px',
+                data: {errorData: resp?.Errordata}
+              });
+              this.toaster.showError('Upload Failed!');
+              break;
+
+            case -2:
+              this.toaster.showError('Please choose a valid file');
+              break;
+
+            case -3:
+              this.toaster.showError('Failed to save new mapping.');
+              break;
+            default:
+              this.toaster.showError('Unexpected response!');
+          }
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.toaster.showError('Server error occurred!');
+        },
+        complete: () => {
+          this.clearFile();
+          if (this.dialogRef) {
+            this.dialogRef.close();
+          }
+          this.getBypassUserMapping();
+        }
+      });
+    } else {
+      this.toaster.showError('Please Select File');
+    }
+  }
+
+  clearFile() {
+    this.file = null;
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 
 

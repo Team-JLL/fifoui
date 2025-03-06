@@ -153,10 +153,10 @@ export class DashboardService {
     return this.apiProvider.post(UrlConstants.downloadUserMasterTemplate, data, {responseType: 'blob'});
   }
 
-  public uploadUserMasterData(): Observable<any> {
-    const data = {}
-    return this.apiProvider.post(UrlConstants.uploadUserMasterData, data, {responseType: 'blob'});
+  public uploadUserMasterData(formData: FormData): Observable<any> {
+    return this.apiProvider.post(UrlConstants.uploadUserMasterData, formData, '' );
   }
+
 
   public downloadUserMaster(searchCriteria:any): Observable<any> {
     const data = {searchCriteria}
