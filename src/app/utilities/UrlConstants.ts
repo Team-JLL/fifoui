@@ -46,6 +46,7 @@ export class UrlConstants {
   public static downloadUserMasterTemplate = UrlConstants.fifoReport + 'downloadUserMasterTemplate'
   public static uploadUserMasterData = UrlConstants.fifoReport + 'uploadUserMasterData'
   public static downloadUserMaster = UrlConstants.fifoReport + 'downloadUserMaster'
+  public static downloadFifoUsersWithRole = UrlConstants.fifoReport + 'downloadFifoPortalUsersWithRole'
 
   /*APP Api */
   public static  appApi = UrlConstants.api +  'appApi/';

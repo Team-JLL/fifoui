@@ -157,10 +157,18 @@ export class DashboardService {
     return this.apiProvider.post(UrlConstants.uploadUserMasterData, formData, '' );
   }
 
-
   public downloadUserMaster(searchCriteria:any): Observable<any> {
     const data = {searchCriteria}
     return this.apiProvider.post(UrlConstants.downloadUserMaster, data, {responseType: 'blob'});
   }
+
+  public downloadFifoUsersWithRole(): Observable<any> {
+    const data = {}
+    return this.apiProvider.post(UrlConstants.downloadFifoUsersWithRole, data, {responseType: 'blob'});
+  }
+
+
+
+
 
 }

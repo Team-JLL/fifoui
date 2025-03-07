@@ -81,8 +81,16 @@
         <mat-tab label="FIFO Users" >
           <div class="row">
             <div class="col-md-8">
-              <p class="form-header-3">FIFO Users</p>
-              <p class="file-upload-heading-info">Manage FIFO Users here.</p>
+
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <div>
+                  <p class="form-header-3">FIFO Users</p>
+                  <p class="file-upload-heading-info">Manage FIFO Users here.</p>
+                </div>
+                <button type="button" class="usrRoleDownldBtn" (click)="downloadUserRoleMaster()">
+                  <i class="fa fa-download"></i> Download
+                </button>
+              </div>
 
               <div class="search-container">
                 <div class="search-box">

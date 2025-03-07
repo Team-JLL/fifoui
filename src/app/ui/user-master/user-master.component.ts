@@ -460,5 +460,28 @@ export class UserMasterComponent {
     }
   }
 
+  downloadUserRoleMaster(){
+
+    const spine = this.spinner.start();
+    let fileName = 'FIFO - User Role Master.xlsx';
+
+    this.dashboardservice.downloadFifoUsersWithRole().subscribe(response => {
+      const url = window.URL.createObjectURL(response);
+      const a = document.createElement('a');
+      document.body.appendChild(a);
+      a.setAttribute('style', 'display: none');
+      a.href = url;
+      a.download = fileName;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+
+      this.spinner.stop(spine);
+    }, error => {
+      console.error('Error downloading report:', error);
+      this.spinner.stop(spine);
+    });
+
+  }
 
 }
