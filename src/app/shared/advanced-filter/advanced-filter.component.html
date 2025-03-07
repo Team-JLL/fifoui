@@ -27,7 +27,10 @@
                       <i class="material-icons dlticon" ngxMatSelectSearchClear>delete_outline</i>
                     </ngx-mat-select-search>
                   </mat-option>
-                  <mat-option [value]="null">None</mat-option>
+
+                  <!-- Show "None" option only if multiple is false -->
+                  <mat-option *ngIf="!field.multiple" [value]="null">None</mat-option>
+
                   <mat-option *ngFor="let option of filteredOptions[field.key]" [value]="option.value">
                     {{ option.label }}
                   </mat-option>
