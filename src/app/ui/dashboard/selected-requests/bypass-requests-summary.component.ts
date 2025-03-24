@@ -13,6 +13,9 @@ import {CookieService} from "ngx-cookie-service";
 import {DatePickerComponent} from "../../liquidation/liqdtn_date-picker/date-picker.component";
 import {LiqdtnRemarksComponent} from "../../liquidation/liqdtn-remarks/liqdtn-remarks.component";
 import {AgGridAngular} from "ag-grid-angular";
+import {map, Observable, of} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {ApproveBypassRequestComponent} from "../../../layouts/approve-popup/approve-bypass-request/approve-bypass-request.component";
 
 @Component({
   selector: 'app-bypass-requests-summary',
@@ -92,7 +95,7 @@ export class BypassRequestsSummaryComponent {
       },
     },
     {field: 'creationBy', headerName: 'Requested By', filter: false, width: 200, cellStyle: {textAlign: 'left'}},
-    {field: 'delete', headerName: 'Action', filter: false, width: 100, cellStyle: {textAlign: 'center'}, cellRenderer: this.colDef1},
+    {field: 'delete', headerName: 'Action', filter: false, width: 100, cellStyle: {textAlign: 'center',cursor: 'pointer'}, cellRenderer: this.colDef1},
   ];
 
 
@@ -277,13 +280,19 @@ export class BypassRequestsSummaryComponent {
       this.toaster.showError("Liquidation Remark can't be empty!")
     }
     else {
-      const aprvepop = this.dialog.open(ApproveBarComponent, {width: '80vh'})
-      aprvepop.afterClosed().subscribe(
-        data => {
-          if (data !== undefined) {
-            this.submitRequestsForBypass(data)
-          }
-        })
+      this.checkBypassCount().subscribe((bypassData: any[]) => {
+        if (bypassData.length > 0) {
+          const aprvepop = this.dialog.open(ApproveBypassRequestComponent, {
+            width: '80vh',
+            data: { bypassData: bypassData }, // Pass the entire array to popup
+          })
+          aprvepop.afterClosed().subscribe((data) => {
+            if (data !== undefined) {
+              this.submitRequestsForBypass(data)
+            }
+          })
+        }
+      })
     }
   }
 
@@ -316,11 +325,31 @@ export class BypassRequestsSummaryComponent {
       })
   }
 
-
-
-
-
-
+  checkBypassCount(): Observable<any[]> {
+    return this.dashboardservice.getBypassCountOfSameChildSKU(this.selectedRequests).pipe(
+      map((response: any) => {
+        if (response && response.totalCounts && Array.isArray(response.totalCounts)) {
+          // Map each item into an object containing all values
+          return response.totalCounts.map((item: any) => {
+            return {
+              errorMessage: `FIFO has been bypassed (<strong>${item.bypassCount}</strong>) ${item.bypassCount === 1 ? 'time' : 'times'} for this combination in the past.`,
+              bypassCount: Number(item.bypassCount) || 0,
+              parentItem: item.mainMaterialCd || 'Unknown Parent',
+              childItem: item.childMaterialCd || 'Unknown Child',
+              depot: item.depotCd || 'Unknown Depot',
+              channel: item.channelCd || 'Unknown Channel'
+            }
+          })
+        } else {
+          return [] // No bypass found
+        }
+      }),
+      catchError((error: any) => {
+        console.error('Error fetching bypass count:', error?.message || error)
+        return of([]) // Return empty array on error
+      })
+    )
+  }
 
 
 

@@ -57,8 +57,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     UserMasterComponent,
     AddNewUserComponent,
     UploadErrorsComponent,
-    AdvancedFilterComponent,
-
+    AdvancedFilterComponent
   ],
   imports: [
     BrowserModule,

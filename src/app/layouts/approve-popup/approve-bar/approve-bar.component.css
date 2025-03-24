@@ -27,5 +27,12 @@
 .pHeader{
   font-family: math;
   color: #003471;
-  margin-left: -38%;
+  margin-left: -50%;
+}
+
+/* Counter Styling */
+.counter {
+  font-size: 0.85rem;
+  margin-top: 4px;
+  color: #616161;
 }

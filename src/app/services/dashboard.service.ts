@@ -126,6 +126,10 @@ export class DashboardService {
     return this.apiProvider.post(UrlConstants.getAllUsersRoleWithModule,data, '')
   }
 
+  public getBypassCountOfSameChildSKU(selectedRequests: any): Observable<any> {
+    const data = {selectedRequests}
+    return this.apiProvider.post(UrlConstants.getBypassCountOfSameChildSKU, data, '');
+  }
 
   /*----------------------Reports-----------------------------*/
   public downloadFinalBypassReport(status:any): Observable<any> {

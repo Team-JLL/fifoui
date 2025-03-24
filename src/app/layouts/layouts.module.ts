@@ -12,6 +12,7 @@ import {NgxSpinnerModule} from "ngx-spinner";
 import { ApproveBarComponent } from './approve-popup/approve-bar/approve-bar.component';
 import { RejectionPopupComponent } from './rejection-popup/rejection-popup.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import { ApproveBypassRequestComponent } from './approve-popup/approve-bypass-request/approve-bypass-request.component';
 
 
 
@@ -22,7 +23,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     LoadingSpinnerComponent,
     CloseButtonDirective,
     ApproveBarComponent,
-    RejectionPopupComponent
+    RejectionPopupComponent,
+    ApproveBypassRequestComponent
   ],
   imports: [
     CommonModule,

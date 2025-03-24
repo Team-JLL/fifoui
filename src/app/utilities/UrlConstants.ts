@@ -28,6 +28,7 @@ export class UrlConstants {
   public static getDetailsForAddNewMapping = UrlConstants.fifoApi + 'getDetailsForAddNewMapping'
   public static addNewBypassMapping = UrlConstants.fifoApi + 'addNewBypassMapping'
   public static editBypassMapping = UrlConstants.fifoApi + 'editBypassMapping'
+  public static getBypassCountOfSameChildSKU = UrlConstants.fifoApi + 'getBypassCountOfSameChildSKU'
 
   /*Flow Controller */
   public static submitBypassRequest = UrlConstants.fifoFlow + 'BypassFromRequester'

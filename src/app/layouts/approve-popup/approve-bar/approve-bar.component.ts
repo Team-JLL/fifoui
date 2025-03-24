@@ -36,5 +36,11 @@ export class ApproveBarComponent implements OnInit {
     if (!regex.test(event.target.value)) {
       event.target.value = event.target.value.replace(/[^A-Za-z0-9\-&(),.% ]/g, '');
     }
+    const input = event.target.value || ''
+    if (input.length > 500) {
+      this.remarks = input.substring(0, 500); // Trim excess if pasted
+    }else {
+      this.remarks = input;
+    }
   }
 }
