@@ -1,0 +1,113 @@
+/* Container Padding & Font Setup */
+body,
+.container,
+textarea,
+button {
+  font-family: Calibri, sans-serif;
+  line-height: 1.4;
+}
+
+/* Close Icon Animation */
+.close-icon {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.close-icon:hover {
+  transform: rotate(90deg);
+}
+
+/* Card for Each Error Row */
+.error-row {
+  border: 1px solid #ffcdd2;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #fff8e1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Error Icon Styling */
+.warningMessage {
+  color: #d32f2f;
+}
+
+/* Content Styling Inside Each Row */
+.row-content p {
+  margin: 2px 0;
+  color: #37474f;
+  font-size: 0.95rem;
+}
+
+.pHeader{
+  font-family: math;
+  color: #003471;
+  margin-left: -50%;
+}
+
+
+/* Textarea Styling */
+textarea {
+  width: 100%;
+  resize: none;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border 0.2s ease;
+}
+
+/* Textarea Focus Effect */
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(199, 199, 199, 0.5);
+}
+
+/* Button Styling */
+.btn-cancel {
+  border-color: #e57373;
+  color: #d32f2f;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #ffebee;
+  border-color: #e53935;
+}
+
+.btn-approve {
+  border-color: #81c784;
+  color: #388e3c;
+  transition: all 0.2s ease;
+}
+
+.btn-approve:hover {
+  background-color: #e8f5e9;
+  border-color: #2e7d32;
+}
+
+/* Counter Styling */
+.counter {
+  font-size: 0.85rem;
+  margin-top: 4px;
+  color: #616161;
+}
+
+
+
+/* Scrollable Container Styling */
+.scroll-container {
+  max-height: 200px; /* Set desired height */
+  overflow-y: auto;
+  border: 1px solid #ccc; /* Optional border */
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Row Styling */
+.error-row {
+  margin-bottom: 10px;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
