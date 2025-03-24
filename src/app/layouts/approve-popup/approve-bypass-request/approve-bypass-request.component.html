@@ -9,16 +9,16 @@
       </span>
     </div>
   </div>
+
   <mat-divider></mat-divider>
 
-  <!-- Container for Bypass Requests -->
   <div class="container-fluid card" style="padding: 10px; margin-bottom: 10px;">
     <!-- Scrollable Container for Warnings -->
-    <div class="scroll-container">
+    <div class="scroll-container" *ngIf="hasBypassData">
       <!-- Loop to Render Rows Without Table -->
-      <div *ngFor="let item of data.bypassData" class="error-row">
+      <div *ngFor="let item of filteredBypassData" class="error-row">
         <div class="d-flex align-items-center">
-          <strong> ⚠️</strong>
+          <strong style="padding: 15px"> ⚠️</strong>
           <div class="row-content">
             <p style="color:red" [innerHTML]="item.errorMessage"></p>
             <p><strong>Parent SKU:</strong> {{ item.parentItem }}</p>

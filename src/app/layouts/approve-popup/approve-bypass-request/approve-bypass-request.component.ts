@@ -53,4 +53,14 @@ export class ApproveBypassRequestComponent {
     }
   }
 
+  get hasBypassData(): boolean {
+    return this.data?.bypassData?.filter((item: any) => item.bypassCount > 0).length > 0;
+  }
+
+  get filteredBypassData(): any[] {
+    return this.data?.bypassData?.filter((item: any) => item.bypassCount > 0) || [];
+  }
+
+
+
 }
