@@ -14,6 +14,9 @@ import {ApproveBarComponent} from "../../layouts/approve-popup/approve-bar/appro
 import {RejectionPopupComponent} from "../../layouts/rejection-popup/rejection-popup.component";
 import {EventPopupComponent} from "../event-popup/event-popup.component";
 import {AppConstants} from "../../utilities/AppConstants";
+import {ApproveBypassRequestComponent} from "../../layouts/approve-popup/approve-bypass-request/approve-bypass-request.component";
+import {map, Observable, of} from "rxjs";
+import {catchError} from "rxjs/operators";
 
 
 
@@ -284,36 +287,41 @@ export class LiquidationComponent {
   }
 
   approveBypass() {
-    let emptyLiquidDate = false ;
-    let emptyLiquidRemark = false ;
+    let emptyLiquidDate = false;
+    let emptyLiquidRemark = false;
 
-    this.selectedRequests.forEach((element:any,index:any,_:any) =>{
+    this.selectedRequests.forEach((element: any, index: any, _: any) => {
       //console.log("- Liquidation dates -"+ element.liquidationDate)
       if (element.liquidationDate == '' || element.liquidationDate == null) {
         emptyLiquidDate = true
       }
       if (element.liqdtnRemark == '' || element.liqdtnRemark == null) {
-        emptyLiquidRemark = true  }
+        emptyLiquidRemark = true
+      }
     })
 
 
     if (this.selectedRequests.length == 0) {
-        this.toaster.showError("Please select item for bypass")
-      } else if(this.role.match('FIFOLQDUSR') && emptyLiquidDate){
-        this.toaster.showError("Liquidation Date can't be empty!")
-      } else if(this.role.match('FIFOLQDUSR') && emptyLiquidRemark) {
-        this.toaster.showError("Liquidation Remark can't be empty!")
-      }
-      else {
-        const aprvepop = this.dialog.open(ApproveBarComponent, {width: '80vh'})
-        aprvepop.afterClosed().subscribe(
-          data => {
+      this.toaster.showError("Please select item for bypass")
+    } else if (this.role.match('FIFOLQDUSR') && emptyLiquidDate) {
+      this.toaster.showError("Liquidation Date can't be empty!")
+    } else if (this.role.match('FIFOLQDUSR') && emptyLiquidRemark) {
+      this.toaster.showError("Liquidation Remark can't be empty!")
+    } else {
+      this.checkBypassCount().subscribe((bypassData: any[]) => {
+          const aprvepop = this.dialog.open(ApproveBypassRequestComponent, {
+            width: '80vh',
+            data: {bypassData: bypassData}, // Pass the entire array to popup
+          })
+          aprvepop.afterClosed().subscribe((data) => {
             if (data !== undefined) {
               this.BypassFromLiquidation(data)
             }
           })
-      }
+      })
     }
+  }
+
 
   BypassFromLiquidation(remarks:any) {
       const spine = this.spinner.start()
@@ -348,15 +356,28 @@ export class LiquidationComponent {
       this.toaster.showError("Please select item for rejection")
     } else if (actionDenied){
       this.toaster.showWarning("The item ( " + bypassRequestCd + " ) is created by you. It cannot be rejected..!")
-    } else
-    {
-      const rejectPopUp = this.dialog.open(RejectionPopupComponent, {width: '80vh'})
-      rejectPopUp.afterClosed().subscribe(
-        data => {
-          if (data !== undefined) {
-            this.RejectionFromAllStage(data)
-          }
-        })
+    }
+    // else {
+    //   const rejectPopUp = this.dialog.open(RejectionPopupComponent, {width: '80vh'})
+    //   rejectPopUp.afterClosed().subscribe(
+    //     data => {
+    //       if (data !== undefined) {
+    //         this.RejectionFromAllStage(data)
+    //       }
+    //     })
+    // }
+    else {
+      this.checkBypassCount().subscribe((bypassData: any[]) => {
+          const rejectPopUp = this.dialog.open(RejectionPopupComponent, {
+            width: '80vh',
+            data: {bypassData: bypassData}, // Pass the entire array to popup
+          })
+          rejectPopUp.afterClosed().subscribe((data) => {
+            if (data !== undefined) {
+              this.RejectionFromAllStage(data)
+            }
+          })
+      })
     }
   }
 
@@ -450,6 +471,31 @@ export class LiquidationComponent {
     }));
   }
 
+  checkBypassCount(): Observable<any[]> {
+    return this.dashboardservice.getBypassCountOfSameChildSKU(this.selectedRequests).pipe(
+      map((response: any) => {
+        if (response && response.totalCounts && Array.isArray(response.totalCounts)) {
+          // Map each item into an object containing all values
+          return response.totalCounts.map((item: any) => {
+            return {
+              errorMessage: `FIFO has been bypassed (<strong>${item.bypassCount}</strong>) ${item.bypassCount === 1 ? 'time' : 'times'} for this combination in last 6 months.`,
+              bypassCount: Number(item.bypassCount) || 0,
+              parentItem: item.mainMaterialCd || 'Unknown Parent',
+              childItem: item.childMaterialCd || 'Unknown Child',
+              depot: item.depotCd || 'Unknown Depot',
+              channel: item.channelCd || 'Unknown Channel'
+            }
+          })
+        } else {
+          return [] // No bypass found
+        }
+      }),
+      catchError((error: any) => {
+        console.error('Error fetching bypass count:', error?.message || error)
+        return of([]) // Return empty array on error
+      })
+    )
+  }
 
 
 }

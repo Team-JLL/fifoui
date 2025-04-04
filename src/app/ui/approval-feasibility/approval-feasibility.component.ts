@@ -12,6 +12,9 @@ import {RejectionPopupComponent} from "../../layouts/rejection-popup/rejection-p
 import {ApproveBarComponent} from "../../layouts/approve-popup/approve-bar/approve-bar.component";
 import {EventPopupComponent} from "../event-popup/event-popup.component";
 import {AppConstants} from "../../utilities/AppConstants";
+import {map, Observable, of} from "rxjs";
+import {catchError} from "rxjs/operators";
+import {ApproveBypassRequestComponent} from "../../layouts/approve-popup/approve-bypass-request/approve-bypass-request.component";
 
 @Component({
   selector: 'app-approval-feasibility',
@@ -163,16 +166,19 @@ export class ApprovalFeasibilityComponent {
     if (this.selectedRequests.length == 0) {
       this.toaster.showError("Please select item for bypass")
     } else {
-      const aprvepop = this.dialog.open(ApproveBarComponent, {width: '80vh'})
-      aprvepop.afterClosed().subscribe(
-        data => {
-          if (data !== undefined) {
-            this.BypassFromApprovalFeasibility(data)
-          }
-        })
+      this.checkBypassCount().subscribe((bypassData: any[]) => {
+          const aprvepop = this.dialog.open(ApproveBypassRequestComponent, {
+            width: '80vh',
+            data: {bypassData: bypassData}, // Pass the entire array to popup
+          })
+          aprvepop.afterClosed().subscribe((data) => {
+            if (data !== undefined) {
+              this.BypassFromApprovalFeasibility(data)
+            }
+          })
+      })
     }
   }
-
 
 
   BypassFromApprovalFeasibility(remarks:any) {
@@ -211,16 +217,29 @@ export class ApprovalFeasibilityComponent {
       this.toaster.showError("Please select item for rejection")
     } else if (actionDenied){
        this.toaster.showWarning("The item ( " + bypassRequestCd + " ) is created by you. It cannot be rejected..!")
-    } else
-      {
-        const rejectPopUp = this.dialog.open(RejectionPopupComponent, {width: '80vh'})
-        rejectPopUp.afterClosed().subscribe(
-          data => {
+    }
+    // else {
+    //     const rejectPopUp = this.dialog.open(RejectionPopupComponent, {width: '80vh'})
+    //     rejectPopUp.afterClosed().subscribe(
+    //       data => {
+    //         if (data !== undefined) {
+    //           this.RejectionFromAllStage(data)
+    //         }
+    //       })
+    //   }
+    else {
+      this.checkBypassCount().subscribe((bypassData: any[]) => {
+          const rejectPopUp = this.dialog.open(RejectionPopupComponent, {
+            width: '80vh',
+            data: {bypassData: bypassData}, // Pass the entire array to popup
+          })
+          rejectPopUp.afterClosed().subscribe((data) => {
             if (data !== undefined) {
               this.RejectionFromAllStage(data)
             }
           })
-      }
+      })
+    }
   }
 
   RejectionFromAllStage(remarks:any){
@@ -350,6 +369,31 @@ export class ApprovalFeasibilityComponent {
     }));
   }
 
+  checkBypassCount(): Observable<any[]> {
+    return this.dashboardservice.getBypassCountOfSameChildSKU(this.selectedRequests).pipe(
+      map((response: any) => {
+        if (response && response.totalCounts && Array.isArray(response.totalCounts)) {
+          // Map each item into an object containing all values
+          return response.totalCounts.map((item: any) => {
+            return {
+              errorMessage: `FIFO has been bypassed (<strong>${item.bypassCount}</strong>) ${item.bypassCount === 1 ? 'time' : 'times'} for this combination in last 6 months.`,
+              bypassCount: Number(item.bypassCount) || 0,
+              parentItem: item.mainMaterialCd || 'Unknown Parent',
+              childItem: item.childMaterialCd || 'Unknown Child',
+              depot: item.depotCd || 'Unknown Depot',
+              channel: item.channelCd || 'Unknown Channel'
+            }
+          })
+        } else {
+          return [] // No bypass found
+        }
+      }),
+      catchError((error: any) => {
+        console.error('Error fetching bypass count:', error?.message || error)
+        return of([]) // Return empty array on error
+      })
+    )
+  }
 
 
 }

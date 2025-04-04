@@ -16,6 +16,7 @@ export class RejectionPopupComponent implements OnInit {
   hideBtn : boolean = true;
   role: string;
   message:string = "Are you sure to reject the request(s)?"
+  bypassData: any[] = []
 
 
 
@@ -26,6 +27,9 @@ export class RejectionPopupComponent implements OnInit {
               private toaster: SnackBarService,) {
 
     this.role = this.Cryptoservice.decryptData(this.cookie.get(AppConstants.role));
+    if (data && data.bypassData && Array.isArray(data.bypassData)) {
+      this.bypassData = data.bypassData
+    }
   }
 
   ngOnInit(): void {
@@ -54,6 +58,20 @@ export class RejectionPopupComponent implements OnInit {
     if (!regex.test(event.target.value)) {
       event.target.value = event.target.value.replace(/[^A-Za-z0-9\-&(),.% ]/g, '');
     }
+    const input = event.target.value || ''
+    if (input.length > 500) {
+      this.remarks = input.substring(0, 500); // Trim excess if pasted
+    }else {
+      this.remarks = input;
+    }
+  }
+
+  get hasBypassData(): boolean {
+    return this.data?.bypassData?.filter((item: any) => item.bypassCount > 0).length > 0;
+  }
+
+  get filteredBypassData(): any[] {
+    return this.data?.bypassData?.filter((item: any) => item.bypassCount > 0) || [];
   }
 }
 

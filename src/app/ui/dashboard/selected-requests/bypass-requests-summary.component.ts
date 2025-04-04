@@ -281,7 +281,6 @@ export class BypassRequestsSummaryComponent {
     }
     else {
       this.checkBypassCount().subscribe((bypassData: any[]) => {
-        if (bypassData.length > 0) {
           const aprvepop = this.dialog.open(ApproveBypassRequestComponent, {
             width: '80vh',
             data: { bypassData: bypassData }, // Pass the entire array to popup
@@ -291,7 +290,7 @@ export class BypassRequestsSummaryComponent {
               this.submitRequestsForBypass(data)
             }
           })
-        }
+
       })
     }
   }
@@ -332,7 +331,7 @@ export class BypassRequestsSummaryComponent {
           // Map each item into an object containing all values
           return response.totalCounts.map((item: any) => {
             return {
-              errorMessage: `FIFO has been bypassed (<strong>${item.bypassCount}</strong>) ${item.bypassCount === 1 ? 'time' : 'times'} for this combination in the past.`,
+              errorMessage: `FIFO has been bypassed (<strong>${item.bypassCount}</strong>) ${item.bypassCount === 1 ? 'time' : 'times'} for this combination in last 6 months.`,
               bypassCount: Number(item.bypassCount) || 0,
               parentItem: item.mainMaterialCd || 'Unknown Parent',
               childItem: item.childMaterialCd || 'Unknown Child',
