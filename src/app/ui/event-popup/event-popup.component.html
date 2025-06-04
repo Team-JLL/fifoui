@@ -14,13 +14,19 @@
   </div>
   <br>
   <div class="spacer"></div>
-  <div class="timeline">
-    <div class="container right" *ngFor=" let event of data">
-      <div class="content">
-        <h2 [className]="event.styleClass">{{event.eventName}} - ({{event.creationdate}})</h2>
-        <p style="color: #037ca9; font-size: 12px; font-family: Arial,monospace">{{event.eventRemark}}</p>
-        <p style="color: darkblue; font-size: 12px;font-family: sans-serif">Remarks : {{event.userRemark}}</p>
+  <div class="timeline-scroll-wrapper">
+    <div class="timeline">
+      <div class="container right" *ngFor=" let event of data">
+        <div class="content">
+          <h2 [className]="event.styleClass">
+            {{event.eventName}} -
+            <span class="creation-date">{{event.creationdate}}</span>
+          </h2>
+          <p style="color: #404e67; font-size: 12px; font-family: Arial,monospace">{{event.eventRemark}}</p>
+          <p style="color: darkblue; font-size: 12px;font-family: sans-serif">Remarks : {{event.userRemark}}</p>
+        </div>
       </div>
     </div>
   </div>
+
 </div>

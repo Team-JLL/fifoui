@@ -169,3 +169,16 @@ p {
   font-weight: 600;
   font-family: Arial, serif;
 }
+
+.timeline-scroll-wrapper {
+  max-height: 400px; /* adjust as needed */
+  overflow-y: auto;
+  padding-right: 10px; /* avoid content cut off by scrollbar */
+  border: 1px solid #ccc; /* optional: for visual boundary */
+}
+
+.creation-date {
+  font-size: 10px;  /* smaller size */
+  color: black;     /* black color */
+  font-weight: normal; /* optional: normal weight */
+}
