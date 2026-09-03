@@ -6,6 +6,32 @@
   font-size: 12px;
   margin-top: 10px;
 }
+/* Fixed 32px height (not padding-based) so it matches exactly what the mat-sidenav-content
+   height calc above subtracts (96px = 64px toolbar + 32px banner) - a padding+text-driven
+   height would be a couple px off and leave a gap or clip content. */
+.maintenance-banner {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  background-color: #c62828;
+  color: #ffffff;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.maintenance-banner-track {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 100%;
+  animation: maintenance-scroll 22s linear infinite;
+  font-weight: 500;
+  font-size: 14px;
+}
+@keyframes maintenance-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
 .mat-drawer-content {
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */

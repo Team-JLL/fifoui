@@ -10,6 +10,11 @@ export class UrlConstants {
   public static  fifoApi = UrlConstants.api +  'fifoApi/';
   public static  fifoFlow = UrlConstants.api +  'fifoFlow/';
   public static  fifoReport = UrlConstants.api +  'fifoReport/';
+  public static  serverMaintenanceApi = UrlConstants.api +  'serverMaintenanceApi/';
+
+  // Server Maintenance Intimation - public status poll, no auth required (see jllappsapi's
+  // AppSecurityInterceptor except-list). Console is the only app that can start/stop it.
+  public static getMaintenanceStatus = UrlConstants.serverMaintenanceApi + 'getMaintenanceStatus';
 
   /*API Controller*/
   public static getFifoMaster = UrlConstants.fifoApi + 'getFifoMaster'

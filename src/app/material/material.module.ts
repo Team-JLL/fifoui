@@ -18,6 +18,8 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatExpansionModule} from "@angular/material/expansion";
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatTooltipModule} from "@angular/material/tooltip";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatOptionModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [],
@@ -41,7 +43,9 @@ import { MatTooltipModule} from "@angular/material/tooltip";
     MatSnackBarModule,
     MatExpansionModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatOptionModule
 
   ],
   exports: [
@@ -62,7 +66,9 @@ import { MatTooltipModule} from "@angular/material/tooltip";
     MatMenuModule,
     MatSnackBarModule,
     MatExpansionModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatOptionModule
   ]
 })
 export class MaterialModule {

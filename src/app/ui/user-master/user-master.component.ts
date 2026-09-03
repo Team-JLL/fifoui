@@ -10,7 +10,6 @@ import {ColDef, GridApi} from 'ag-grid-community';
 import {AddNewUserComponent} from "./add-new-user/add-new-user.component";
 import {UrlConstants} from "../../utilities/UrlConstants";
 import {UploadErrorsComponent} from "../file-upload/file-upload-errors/upload-errors.component";
-import {AngularFileUploaderComponent} from "angular-file-uploader";
 import {AdvancedFilterComponent} from "../../shared/advanced-filter/advanced-filter.component";
 import {ReplaySubject, Subject, takeUntil} from "rxjs";
 import {User} from "../../model/User";
@@ -26,7 +25,6 @@ import {Channel} from "../../model/Channel";
 export class UserMasterComponent {
   @ViewChild('userMappingTemplate', { static: true }) userMappingTemplate!: TemplateRef<any>;
   @Output() result: EventEmitter<any> = new EventEmitter<any>();
-  @ViewChild('usrMasterBulkUpload', {static: true}) private usrMasterBulkUpload!: AngularFileUploaderComponent;
   @ViewChild('advancedFilter') advancedFilter!: AdvancedFilterComponent;
 
   protected _onDestroy = new Subject<void>();
@@ -64,27 +62,6 @@ export class UserMasterComponent {
   filteredMappingList = []
 
   dialogRef!: MatDialogRef<any>;
-
-  afuConfig = {
-    multiple: false,
-    formatsAllowed: '.xlsx,.xls',
-    maxSize: 100,
-    hideProgressBar: false,
-    hideResetBtn: true,
-    replaceTexts: {
-      selectFileBtn: 'Choose file to upload',
-      resetBtn: 'Reset',
-      uploadBtn: 'Upload',
-      dragNDropBox: 'Drag N Drop',
-      attachPinBtn: 'Attach Files...',
-      afterUploadMsg_success: '',
-      afterUploadMsg_error: '',
-      sizeLimit: 'Size Limit'
-    },
-    uploadAPI: {
-      url: '',
-    }
-  };
 
   selectedFile: any;
 

@@ -1,3 +1,10 @@
+<div class="maintenance-banner" *ngIf="maintenanceActive">
+  <div class="maintenance-banner-track">
+    <span>
+      &#9888; {{maintenanceDetails?.bannerMessage}}
+    </span>
+  </div>
+</div>
 <app-toolbar (menuClicked)="sidenav.toggle()"></app-toolbar>
 <mat-sidenav-container class="example-container">
   <mat-sidenav #sidenav [mode]="openSideBar() ? 'over': 'side'" [opened]="!openSideBar()" style="background-color:#1d344c;width: 170px;padding-right: 50px; margin-left: -15px">
@@ -18,7 +25,7 @@
 
   </mat-sidenav>
 
-  <mat-sidenav-content style="height: calc(100vh - 64px)">
+  <mat-sidenav-content [style.height]="maintenanceActive ? 'calc(100vh - 96px)' : 'calc(100vh - 64px)'">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
